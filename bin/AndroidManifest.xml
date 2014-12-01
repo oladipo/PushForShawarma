@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.synkron.pushforshawarma"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCnxU3LuWtGBqvguzzoKCVHeV7fmsD5FL0" />
+
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
+        
+        <!-- Begin Verve Activities Declaration-->
+        <activity
+		    android:name="com.interswitchng.techquest.vervepayment.VervePayment"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.LoginActivity"
+		    android:label=""
+		  >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.VerifyPhoneActivity"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.VerifyTokenActivity"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.AddCardActivity"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.ListCardsActivity"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.base.BaseActivity"
+		    android:label="" >
+		</activity>
+		<activity
+		    android:name="com.interswitchng.techquest.vervepayment.PayWithExistingCardActivity"
+		    android:label="" >
+		</activity>
+		
+		<!-- End Verve Activities -->
+		<!-- begin facebook login activity declaration -->
+		<activity
+        	android:name="com.facebook.LoginActivity"
+        	android:label="@string/title_facebook_login" >
+    	</activity>
+    
+		  <!-- end facebook -->
+		<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
+    
+
+    <meta-data android:name="com.crashlytics.ApiKey" android:value="e4bafaa033519fe36bc3ff03853581f81a809d8b"/>
+    </application>
+
+</manifest>
