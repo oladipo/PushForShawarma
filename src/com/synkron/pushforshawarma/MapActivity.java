@@ -1,10 +1,7 @@
 package com.synkron.pushforshawarma;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -12,45 +9,89 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.*;
 import com.interswitchng.techquest.vervepayment.VervePayment;
+import com.synkron.pushforshawarma.TouchableWrapper.UpdateMapAfterUserInteraction;
+import com.synkron.pushforshawarma.asynctasks.LocationUpdateTask;
+import com.synkron.pushforshawarma.connectors.OutletConnector;
 
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.*;
 
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
-public class MapActivity extends ActionBarActivity {
+public class MapActivity extends ActionBarActivity implements UpdateMapAfterUserInteraction{
 
 	private GoogleMap googleMap;
 	private HashMap<Marker, CustomMarker> mMarkersHashMap;
 	private Location location;
-	TextView txtLocation;
+	public TextView txtLocation;
 	Marker cameraMarker;
-	Button btnBringShawarma;
+	Button btnBringShawarma, btnGoToMyLocation;
 	GroundOverlayOptions userPosition;
 	UiSettings uiSettings;
+	private String TAG = "MapActivity";
+	public TouchableWrapper mTouchableWrapper;
+	LatLng mapCenter;
 	
 	//hold a reference to all instances of sharwarma joints.
 	private ArrayList<CustomMarker> mMarkersArray = new ArrayList<CustomMarker>();
+	private ArrayList<Outlet> Outlets = new ArrayList<Outlet>();
+	
+	private static final float CAMERA_ZOOM_LEVEL = 15L;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.app_name);
 		
+		mTouchableWrapper = new TouchableWrapper(this);
 		
-		setContentView(R.layout.fragment_map);
+		mTouchableWrapper.addView(getLayoutInflater().inflate(R.layout.fragment_map, null));
+		
+		setContentView(mTouchableWrapper);
+		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+		
 		try{
 			initializeMap();
 			btnBringShawarma = (Button)findViewById(R.id.btnPush);
+			btnGoToMyLocation = (Button)findViewById(R.id.goToMyLocation);
 			
+			btnGoToMyLocation.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+				
+					if(location != null){
+						//set the center of the map to user's current location..
+						Log.i(TAG, "Setting map to camera centre: Lat "+mapCenter.latitude+" Long: "+mapCenter.longitude);
+						
+						googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+							location.getLongitude()),CAMERA_ZOOM_LEVEL));
+					
+						Log.i(TAG, "camera zoom level set to :"+ CAMERA_ZOOM_LEVEL);
+					
+						updateWithNewLocation(location);
+					}else{
+						Toast.makeText(getApplicationContext(), "Location data not available, turn on location services to continue", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
 			if(btnBringShawarma != null){
 				
 				btnBringShawarma.setOnClickListener(new OnClickListener(){
@@ -59,7 +100,7 @@ public class MapActivity extends ActionBarActivity {
 					public void onClick(View v) {
 						//get current location coordinates
 						
-						//display order confirmation scrren showing selected address and confirm button
+						//display order confirmation screen showing selected address and confirm button
 						
 						//display option to pay with verve or pay on delivery
 						
@@ -78,6 +119,12 @@ public class MapActivity extends ActionBarActivity {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		initializeMap();
 	}
 	
 	private void payWithVerve() {
@@ -102,83 +149,64 @@ public class MapActivity extends ActionBarActivity {
 	    }
 	}
 	private void updateWithNewLocation(Location location) {
-		// TODO Auto-generated method stub
-		String status = "No Location Found";
-		String addressString = "No Address Information";
-		
-		if(location != null){
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
-			
-			Geocoder geocoder = new Geocoder(this, Locale.getDefault());		
-			
-			try{
-				List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-				StringBuilder sb = new StringBuilder();
-				if(addresses.size() > 0){
-					Address address = addresses.get(0);
-					
-					/*for(int i=0; i < address.getMaxAddressLineIndex(); i++){
-						sb.append(address.getAddressLine(i)).append("\n");
-						sb.append(address.getCountryName());
-					}*/
-					sb.append(address.getAddressLine(0)).append("\n");
-					sb.append(address.getCountryName());
-					
-					addressString = sb.toString();
-				}
-			}catch(IOException ioe){
-				
-			}
-			txtLocation.setText("");
-			txtLocation.setText("YOUR CURRENT ADDRESS: "+"\n"+addressString);
-		}else{
-			txtLocation.setText("");
-			txtLocation.setText(status);
-		}
+		// run in background thread...
+		LocationUpdateTask locationUpdateTask = new LocationUpdateTask(this, location);
+		locationUpdateTask.execute();
 	}
 
 	@SuppressLint("NewApi") 
 	private void initializeMap() {
-		// TODO Auto-generated method stub
 		if (googleMap == null){
 			
 			googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 			googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-			float maxzoom = googleMap.getMaxZoomLevel();
+			
 			uiSettings = googleMap.getUiSettings();
-			
 			uiSettings.setTiltGesturesEnabled(false);
-			
+			uiSettings.setMyLocationButtonEnabled(false);
 			//googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
-			//googleMap.setMyLocationEnabled(true);
+			googleMap.setMyLocationEnabled(true);
+			
+			mapCenter = googleMap.getCameraPosition().target;
+			
+			txtLocation = (TextView)findViewById(R.id.mViewLocation);
 			
 	        // Initialize the HashMap for Markers and MyMarker object
 	        mMarkersHashMap = new HashMap<Marker, CustomMarker>();
 
-	        mMarkersArray.add(new CustomMarker("01 Shawarma", "marker", Double.parseDouble("6.657284"), Double.parseDouble("3.323408")));
-	        mMarkersArray.add(new CustomMarker("01 Shawarma", "marker", Double.parseDouble("6.612574"), Double.parseDouble("3.345402")));
+	        Outlets = getOutlets();
+	        //get marker coordinates from REST service..
+	        for (Outlet outlet : Outlets){
+	        	mMarkersArray.add(new CustomMarker(outlet.getName(), outlet.getIcon(), Double.parseDouble(outlet.getLatitude()), 
+	        			Double.parseDouble(outlet.getLongitude())));
+	        }
 	        
-	        location = getCurrentLocation();
-	        txtLocation = (TextView)findViewById(R.id.mViewLocation);
+	        location = googleMap.getMyLocation();
 	        
-	        updateWithNewLocation(location);
+	        if(location == null){
+	        	//get last known location
+		        location = getCurrentLocation();	        	
+	        }
 	        
-	        if (location != null)
-            {
+	        if (location != null){
+	        	
+		        updateWithNewLocation(location);
+		        
 	        	googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(location.getLatitude(), location.getLongitude()), maxzoom));
+                        new LatLng(location.getLatitude(), location.getLongitude()), CAMERA_ZOOM_LEVEL));
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                 						.target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-						                .zoom(maxzoom)
+						                .zoom(CAMERA_ZOOM_LEVEL)
 						                .build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+            }else{
+            	Toast.makeText(getApplicationContext(), "location information unavailable", Toast.LENGTH_SHORT).show();
+            	updateWithNewLocation(location);
             }
 
 			plotMarkers(mMarkersArray);
-			
 			
 			googleMap.setOnMarkerClickListener(new OnMarkerClickListener(){
 
@@ -194,34 +222,18 @@ public class MapActivity extends ActionBarActivity {
 
 				@Override
 				public void onMyLocationChange(Location arg0) {
-					updateWithNewLocation(arg0);
+					location = arg0;
+					
+					//updateWithNewLocation(arg0);
 				}
 				
 			});
-			
-			userPosition = new GroundOverlayOptions()
-            					.image(BitmapDescriptorFactory.fromResource(R.drawable.pegman))
-            					.position(new LatLng(location.getLatitude(), location.getLongitude()), 150f);
-			
-			googleMap.addGroundOverlay(userPosition);
 			             
 			googleMap.setOnCameraChangeListener(new OnCameraChangeListener(){
 
 				@Override
 				public void onCameraChange(CameraPosition position) {
-					//remove the previous marker
-		/*			if(cameraMarker != null)
-						cameraMarker.remove();
-					
-					//add a custom marker on the current position
-		            MarkerOptions markerOption = new MarkerOptions().position(position.target);
-		            markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.pegman));
-		            
-		            cameraMarker = googleMap.addMarker(markerOption);
-		            */
-		            updateWithNewLocation(location); 
-					userPosition.position(position.target, 150f);
-					
+		            //updateWithNewLocation(location); 
 				}
 				
 			});
@@ -229,6 +241,17 @@ public class MapActivity extends ActionBarActivity {
 				Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	private ArrayList<Outlet> getOutlets() {
+		// TODO Auto-generated method stub
+		OutletConnector _connector = new OutletConnector(this);
+		_connector.execute();
+		
+		Outlets.add(new Outlet("01 Shawarma", "marker","6.657284", "3.323408"));
+		Outlets.add(new Outlet("01 Shawarma", "marker","6.612574", "3.345402"));
+		
+		return Outlets;
 	}
 
 	@Override
@@ -244,17 +267,30 @@ public class MapActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch(id) {
+			//initialize intent to launch user profile activity..
+		case R.id.action_user_profile:
+			launchUserProfile();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);	
 		}
-		return super.onOptionsItemSelected(item);
+		
 	}
 	
-	@Override
-	public void onResume(){
-		super.onResume();
-		initializeMap();
+	private void launchUserProfile() {
+		try{
+			Intent intent = new Intent(this , UserProfileActivity.class);
+			startActivity(intent);
+			
+		}catch(Exception Ex){
+			Log.d(TAG, Ex.getMessage());
+			Toast toast = Toast.makeText(this, "Error Lauching User Profile :" + Ex.getMessage(), 
+					Toast.LENGTH_SHORT);
+			toast.show();
+		}
 	}
+
 	
 	//add all sharwarma joints to the map
 	//the coordinates are retrieved via json from a web service....
@@ -266,7 +302,10 @@ public class MapActivity extends ActionBarActivity {
 	        {
 
 	            // Create user marker with custom icon and other options
-	            MarkerOptions markerOption = new MarkerOptions().position(new LatLng(myMarker.getmLatitude(), myMarker.getmLongitude()));
+	            MarkerOptions markerOption = new MarkerOptions().flat(true)
+	            		//.draggable(true)
+	            		.position(new LatLng(myMarker.getmLatitude(), myMarker.getmLongitude()));
+	            
 	            markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_new));
 	            
 
@@ -279,7 +318,7 @@ public class MapActivity extends ActionBarActivity {
 	}
 	
 	 private int manageMarkerIcon(String markerIcon){
-	            return R.drawable.marker_new;
+	            return R.drawable.logo_01_shawarma;
 	 }
 	 
 	 public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
@@ -331,7 +370,86 @@ public class MapActivity extends ActionBarActivity {
 			criteria.setCostAllowed(true);
 			
 			String provider = locationManager.getBestProvider(criteria, true);
+			
+			if(!isGPSAvailable(locationManager)){
+				
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		        dialog.setMessage("Location services not enabled");
+		        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
-			return location = locationManager.getLastKnownLocation(provider);
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		                //this will navigate user to the device location settings screen
+		                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		                startActivity(intent);
+		            }
+		        });
+		        
+		        AlertDialog alert = dialog.create();
+		        alert.show();
+		        
+		        location = null;
+		        
+			}else{
+				location = locationManager.getLastKnownLocation(provider);
+			}
+			
+			return location;
 	 }
+
+	@Override
+	public void onUpdateMapAfterUserInteraction() {
+		Log.i(TAG, "onUpdateMapAfterUserInteraction has been called.");
+		goToMapCentre();
+	}
+
+	public void goToMapCentre(){
+		
+		if(googleMap != null){
+			mapCenter = googleMap.getCameraPosition().target;
+			
+			Location theLocation = new Location("panLocation");
+			theLocation.setLatitude(mapCenter.latitude);
+			theLocation.setLongitude(mapCenter.longitude);
+			
+			updateWithNewLocation(theLocation);
+			
+		}else{
+			
+			Log.i(TAG, "onUpdateMapAfterUserInteraction: googleMap is null");
+			updateWithNewLocation(location);
+		}
+	}
+	private boolean isGPSAvailable(LocationManager locationManager ) {
+	    
+		Log.i(TAG, "Checking Location Services Availability with checkGPSStatus");
+		
+	    boolean gps_enabled = false;
+	    boolean network_enabled = false;
+	    
+	    if( locationManager == null ) {
+	        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    }
+	    
+	    try{
+	    	gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	        
+	    }catch (Exception ex){
+	    	Log.e(TAG, "isGPSAvailable exception : "+ ex.getMessage());
+	    }
+	    
+	    try{
+	    	network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+	    	
+	    }catch (Exception ex){
+	    	Log.e(TAG, "isGPSAvailable exception : "+ ex.getMessage());
+	    }
+	    
+	    if (!gps_enabled && !network_enabled ){
+	    	
+	    	return false;
+	    }
+	    
+	    return true;
+	}
 }

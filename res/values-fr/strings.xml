@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Poussez Pour Shawarma</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="marker_logo_desc">logo</string>
+    <string name="pushBtnText">Apporte-Moi Shawarma!</string>
+    <string name="mapLaunchText">Voir la carte</string>
+    <string name="signInFacebook">Facebook</string>
+    <string name="signInGoogle">Google+</string>
+    <string name="signInTwitter">Twitter</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="welcomeMessage"><strong>Poussez Pour Shawarma</strong> Vous aide à obtenir shawarma de l\'emplacement le plus proche. &lt;br /> &lt;br /> Facile, cliquez simplement sur le \'Apportez-moi SHAWARMA!\' Bouton!.</string>
+    <string name="signInMessage">Pour continuer, S\'il vous plaît vous identifier</string>
+    <string name="facebook_app_id">736679566385339</string>
+    <string name="title_facebook_login">Facebook</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+	<string name="action_user_profile">Profil utilisateur</string>
+	<string name="action_sign_out">Se Déconnecter</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Shawarmaのためにプッシュ</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">こんにちは世界！</string>
+    <string name="action_settings">[設定]</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="marker_logo_desc">ロゴ</string>
+    <string name="pushBtnText">私Shawarmaをお忘れなく！</string>
+    <string name="mapLaunchText">地図を表示</string>
+    <string name="signInFacebook">フェイスブック</string>
+    <string name="signInGoogle">Google+の</string>
+    <string name="signInTwitter">ツイッター</string>
+    <string name="welcome">ようこそ</string>
+    <string name="welcomeMessage"><strong>Shawarmaのためにプッシュ</strong> あなたは、最も近い場所からshawarmaを得ることができます. &lt;br /> &lt;br /> それは 、ただ簡単にクリック \'ミーSHAWARMAブリング!\' ボタン. </string>
+    <string name="signInMessage">続行するには、ログインしてください</string>
+    <string name="facebook_app_id">736679566385339</string>
+    <string name="title_facebook_login">フェイスブック</string>
+    <string name="title_activity_user_profile">のUserProfile</string>
+	<string name="action_user_profile">ユーザープロファイル</string>
+	<string name="action_sign_out">サインアウト</string>
+</resources>
