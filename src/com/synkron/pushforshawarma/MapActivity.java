@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.*;
 import com.interswitchng.techquest.vervepayment.VervePayment;
 import com.synkron.pushforshawarma.TouchableWrapper.UpdateMapAfterUserInteraction;
 import com.synkron.pushforshawarma.asynctasks.LocationUpdateTask;
+import com.synkron.pushforshawarma.callbacks.AsyncTaskCallback;
 import com.synkron.pushforshawarma.connectors.OutletConnector;
 
 import android.support.v7.app.ActionBarActivity;
@@ -30,7 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
-public class MapActivity extends ActionBarActivity implements UpdateMapAfterUserInteraction{
+public class MapActivity extends ActionBarActivity implements UpdateMapAfterUserInteraction, AsyncTaskCallback{
 
 	private GoogleMap googleMap;
 	private HashMap<Marker, CustomMarker> mMarkersHashMap;
@@ -49,6 +50,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	private ArrayList<Outlet> Outlets = new ArrayList<Outlet>();
 	
 	private static final float CAMERA_ZOOM_LEVEL = 15L;
+	private static final float USER_DATA_INTERVAL = 400L;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,12 +176,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	        // Initialize the HashMap for Markers and MyMarker object
 	        mMarkersHashMap = new HashMap<Marker, CustomMarker>();
 
-	        Outlets = getOutlets();
-	        //get marker coordinates from REST service..
-	        for (Outlet outlet : Outlets){
-	        	mMarkersArray.add(new CustomMarker(outlet.getName(), outlet.getIcon(), Double.parseDouble(outlet.getLatitude()), 
-	        			Double.parseDouble(outlet.getLongitude())));
-	        }
+	       
 	        
 	        location = googleMap.getMyLocation();
 	        
@@ -206,8 +203,8 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
             	updateWithNewLocation(location);
             }
 
-			plotMarkers(mMarkersArray);
-			
+	        getOutlets();
+
 			googleMap.setOnMarkerClickListener(new OnMarkerClickListener(){
 
 				@Override
@@ -234,6 +231,11 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 				@Override
 				public void onCameraChange(CameraPosition position) {
 		            //updateWithNewLocation(location); 
+					
+					//check if user has moved out the specified data retrieval 
+					//distance interval for outlets.. location - USER_DATA_INTERVAL
+					
+					// get next outlet data chunk..
 				}
 				
 			});
@@ -243,15 +245,16 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		}
 	}
 
-	private ArrayList<Outlet> getOutlets() {
+	private void getOutlets() {
 		// TODO Auto-generated method stub
 		OutletConnector _connector = new OutletConnector(this);
+		_connector.setAsyncCallback(this);
 		_connector.execute();
 		
+		/*
 		Outlets.add(new Outlet("01 Shawarma", "marker","6.657284", "3.323408"));
 		Outlets.add(new Outlet("01 Shawarma", "marker","6.612574", "3.345402"));
-		
-		return Outlets;
+		*/
 	}
 
 	@Override
@@ -365,7 +368,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 			criteria.setAccuracy(Criteria.ACCURACY_FINE);
 			criteria.setPowerRequirement(Criteria.POWER_LOW);
 			criteria.setAltitudeRequired(false);
-			criteria.setBearingRequired(false);
+			criteria.setBearingRequired(false); 
 			criteria.setSpeedRequired(false);
 			criteria.setCostAllowed(true);
 			
@@ -451,5 +454,25 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	    }
 	    
 	    return true;
+	}
+
+	@Override
+	public void OnTaskDone(Object result) {
+
+		Outlets = (ArrayList<Outlet>) result;
+
+        if(!Outlets.isEmpty()){
+	        
+        	for (Outlet outlet : Outlets){
+	        	
+	        	mMarkersArray.add(new CustomMarker(outlet.getName(), 
+	        			outlet.getIcon(), 
+	        			Double.parseDouble(outlet.getLatitude()), 
+	        			Double.parseDouble(outlet.getLongitude()))
+	        	);
+	        }
+	        
+	        plotMarkers(mMarkersArray);
+        }
 	}
 }

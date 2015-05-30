@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.synkron.pushforshawarma.Outlet;
+import com.synkron.pushforshawarma.callbacks.AsyncTaskCallback;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,10 +23,20 @@ import android.widget.Toast;
 public class OutletConnector extends PushForShawarmaConnector{
 	private static final String TAG = "OutletConnector";
 	ProgressDialog _loadingDialog;
-	String API_OUTLETS_REPOSITORY_ENDPOINT = "http://synkron.cloudapp.net/pfs/outlets/";
+	private static String API_OUTLETS_REPOSITORY_ENDPOINT = "http://104.131.13.155/pfs/outlets/";
+	private AsyncTaskCallback _asyncTaskCallback;
+	private ArrayList<Outlet> mOutlets;
 	
+	
+	//this constructor will be modified to take a gps filter object
+	//that will get outlets only within the region specified in the filter....
 	public OutletConnector(Context context){
 		_context = context;
+		mOutlets = new ArrayList<Outlet>();
+	}
+
+	public void setAsyncCallback(AsyncTaskCallback asyncTaskCallBack) {
+		_asyncTaskCallback = asyncTaskCallBack;
 	}
 	
 	protected void onPreExecute(){
@@ -33,7 +47,7 @@ public class OutletConnector extends PushForShawarmaConnector{
 		  _loadingDialog.setMax(100);
 		  _loadingDialog.setProgress(0);
 		  _loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		  _loadingDialog.setTitle("fetching outlets...");
+		  _loadingDialog.setTitle("fetching outlets in your area...");
 		  _loadingDialog.show();
 	}
 	
@@ -71,26 +85,35 @@ public class OutletConnector extends PushForShawarmaConnector{
 	 				for(int i = 0; i < jsonArray.length(); i++){
 	 						JSONObject innerObj = jsonArray.getJSONObject(i);
 	 						System.out.println(innerObj.getString("Name"));
+	 						
 	 						sb = sb + " "+ innerObj.getString("Name");
+	 						
+	 						String name = innerObj.getString("Name");
+	 						
+	 						//TODO: icon should be a web resource not an app resource..
+	 						String icon = innerObj.getString("Icon");
+	 						String longitude = innerObj.getString("Longitude");
+	 						String latitude = innerObj.getString("Latitude");
+	 						
+	 						Outlet mOutlet = new Outlet(name, icon, longitude, latitude);
+	 						mOutlets.add(mOutlet);
 	 				}
 	 				sb = sb.trim();
 	 				sb = sb.toLowerCase(Locale.US);
-	 				
-	 				if(sb.equals("true")){
-	 					//Save Customer Id to Persistent Store Instance..
-	 				}
+
 	 			}catch (JSONException e) {
-	 				// TODO Auto-generated catch block
 	 				Log.e(TAG, e.getMessage());
 	 			}
 	    	 }else{
 	    		 //throw new IOException("No Network Connection");
+	    		 return "";
 	    	 }
 	         
 	     } catch (Exception e) {
 	         Log.e(TAG, e.getMessage());
 	     }
-	     return sb;
+	     
+	     return String.valueOf(mOutlets.size());
 	}
 	
     @Override
@@ -100,9 +123,10 @@ public class OutletConnector extends PushForShawarmaConnector{
     	Log.i(TAG, "Fetch Outlets Task Completed");
     	
     	if(!result.equals("")){
-	    	
+	    	_asyncTaskCallback.OnTaskDone(mOutlets);
     	}else{
     		Toast.makeText((Context) _context, "empty server response [do you have a valid data connection?]", Toast.LENGTH_SHORT).show();
     	}
     }
+
 }
