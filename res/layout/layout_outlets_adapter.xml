@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+  	    <ImageView android:id="@+id/OutletLogo"
+  	        android:contentDescription="graphic outlet logo"
+  	      	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	    	android:paddingTop="@dimen/activity_vertical_margin" 
+	    	android:src="@drawable/logo_01_shawarma"/>
+
+		<TextView android:id="@+id/OutletName"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@+id/OutletLogo"
+		    android:paddingBottom="@dimen/activity_vertical_margin" 
+		    android:singleLine="true"/>
+		
+		<TextView android:id="@+id/OutletAddress"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/OutletName"
+		    android:layout_toRightOf="@+id/OutletLogo"
+		    android:text="57 Adeniyi Jones Avenue"
+		    android:singleLine="true"/>
+						
+</RelativeLayout>

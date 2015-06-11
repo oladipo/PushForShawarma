@@ -14,11 +14,15 @@ import org.json.JSONObject;
 
 import com.synkron.pushforshawarma.Outlet;
 import com.synkron.pushforshawarma.callbacks.AsyncTaskCallback;
+import com.synkron.pushforshawarma.contentproviders.OutletsContentProvider;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.apache.http.client.*;
 
 public class OutletConnector extends PushForShawarmaConnector{
 	private static final String TAG = "OutletConnector";
@@ -96,10 +100,24 @@ public class OutletConnector extends PushForShawarmaConnector{
 	 						String latitude = innerObj.getString("Latitude");
 	 						
 	 						Outlet mOutlet = new Outlet(name, icon, longitude, latitude);
-	 						mOutlets.add(mOutlet);
+	 						mOutlets.add(mOutlet); 						
 	 				}
 	 				sb = sb.trim();
 	 				sb = sb.toLowerCase(Locale.US);
+						
+					//TODO: refactor into a service...
+					//save outlet to content provider....
+ 					for(Outlet item : mOutlets){
+ 						ContentValues values = new ContentValues();
+ 						values.put(OutletsContentProvider.KEY_OUTLET_NAME, item.getName());
+ 						values.put(OutletsContentProvider.KEY_OUTLET_ICON, item.getIcon());
+ 						values.put(OutletsContentProvider.KEY_OUTLET_LONGITUDE, item.getLongitude());
+ 						values.put(OutletsContentProvider.KEY_OUTLET_LATITUDE, item.getLatitude());
+ 						
+ 						//this operation should be happen as a transaction...
+ 						_context.getContentResolver().insert(OutletsContentProvider.CONTENT_URI, values);
+ 					}
+ 					_context.getContentResolver().notifyChange(OutletsContentProvider.CONTENT_URI, null);
 
 	 			}catch (JSONException e) {
 	 				Log.e(TAG, e.getMessage());

@@ -50,8 +50,7 @@
 	   	    android:layout_marginTop="@dimen/activity_vertical_margin" 
 	   	    android:layout_marginLeft="@dimen/activity_vertical_margin"
 	   	    android:layout_height="wrap_content"
-	   	    android:background="@drawable/target"
-	   	    />  
+	   	    android:background="@drawable/target"/>  
 	  
   	    <ImageView android:id="@+id/showMyLocation"
 	   	    android:contentDescription="@string/show_user_location_desc"

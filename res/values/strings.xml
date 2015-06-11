@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Push For Shawarma</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -17,10 +18,12 @@
     <string name="facebook_app_id">736679566385339</string>
     <string name="title_facebook_login">Facebook</string>
     <string name="title_activity_user_profile">UserProfile</string>
-	<string name="action_user_profile">User Profile</string>
-	<string name="action_sign_out">Sign Out</string>
-	<string name="go_to_location_desc">sets current user location</string>
-	<string name="show_user_location_desc">show user location</string>
-	<string name="favorite_locations_desc">favorite locations button</string>
-	<string name="locationLabel">YOUR CURRENT ADDRESS</string>
+    <string name="action_user_profile">User Profile</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="go_to_location_desc">sets current user location</string>
+    <string name="show_user_location_desc">show user location</string>
+    <string name="favorite_locations_desc">favorite locations button</string>
+    <string name="locationLabel">YOUR CURRENT ADDRESS</string>
+    <string name="title_activity_outlet_listings">OutletListingsActivity</string>
+
 </resources>

@@ -13,6 +13,7 @@ import com.synkron.pushforshawarma.TouchableWrapper.UpdateMapAfterUserInteractio
 import com.synkron.pushforshawarma.asynctasks.LocationUpdateTask;
 import com.synkron.pushforshawarma.callbacks.AsyncTaskCallback;
 import com.synkron.pushforshawarma.connectors.OutletConnector;
+import com.synkron.pushforshawarma.OutletListingsActivity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
@@ -50,6 +51,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	private ArrayList<Outlet> Outlets = new ArrayList<Outlet>();
 	
 	private static final float CAMERA_ZOOM_LEVEL = 15L;
+	//size of the area to get outlet information...
 	private static final float USER_DATA_INTERVAL = 400L;
 	
 	@Override
@@ -112,8 +114,8 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 						
 						//display order collected confirmation screen
 						
-						payWithVerve();
-						
+						//payWithVerve();
+						showOutlets();
 					}
 					
 				});
@@ -123,6 +125,10 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		}
 	}
 	
+	public void showOutlets(){
+		Intent intent = new Intent(this, OutletListingsActivity.class);
+		startActivity(intent);
+	}
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -245,16 +251,11 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		}
 	}
 
+	//TODO: remove this method in favor of a content provider...
 	private void getOutlets() {
-		// TODO Auto-generated method stub
 		OutletConnector _connector = new OutletConnector(this);
 		_connector.setAsyncCallback(this);
 		_connector.execute();
-		
-		/*
-		Outlets.add(new Outlet("01 Shawarma", "marker","6.657284", "3.323408"));
-		Outlets.add(new Outlet("01 Shawarma", "marker","6.612574", "3.345402"));
-		*/
 	}
 
 	@Override

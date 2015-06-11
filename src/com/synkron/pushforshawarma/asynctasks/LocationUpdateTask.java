@@ -55,6 +55,9 @@ public class LocationUpdateTask extends AsyncTask<String, String, String>{
 			}catch(IOException ioe){
 				Log.e(TAG, "updateWithNewLocation: Exception :" + ioe.getMessage());
 				Toast.makeText(_context, "data services unavailable", Toast.LENGTH_SHORT).show();
+				
+				//let us see what caused the cause of the error...
+				return ioe.getMessage();
 			}
 		}
 		
