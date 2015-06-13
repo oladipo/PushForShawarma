@@ -8,12 +8,18 @@ import android.widget.Toast;
 
 public class PushForShawarmaConnector extends AsyncTask<String, String, String>{
 	public static Context _context;
+	public static String API_OUTLETS_REPOSITORY_ENDPOINT = "http://104.131.13.155/pfs/outlets/";
+	
+	public PushForShawarmaConnector(Context context){
+		_context = context;
+	}
+	
 	@Override
 	protected String doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public static boolean isNetworkAvaialble(){
+	public boolean isNetworkAvailable(){
 		boolean connected = false;
 		
 		ConnectivityManager check = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);

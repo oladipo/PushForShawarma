@@ -11,9 +11,13 @@ import com.google.android.gms.maps.model.*;
 import com.interswitchng.techquest.vervepayment.VervePayment;
 import com.synkron.pushforshawarma.TouchableWrapper.UpdateMapAfterUserInteraction;
 import com.synkron.pushforshawarma.asynctasks.LocationUpdateTask;
-import com.synkron.pushforshawarma.callbacks.AsyncTaskCallback;
-import com.synkron.pushforshawarma.connectors.OutletConnector;
+
+import com.synkron.pushforshawarma.contentproviders.OutletsContentProvider;
 import com.synkron.pushforshawarma.OutletListingsActivity;
+
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
@@ -21,6 +25,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.*;
 
 import android.os.Bundle;
@@ -32,7 +37,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
-public class MapActivity extends ActionBarActivity implements UpdateMapAfterUserInteraction, AsyncTaskCallback{
+public class MapActivity extends ActionBarActivity implements UpdateMapAfterUserInteraction, LoaderManager.LoaderCallbacks<Cursor>
+{
 
 	private GoogleMap googleMap;
 	private HashMap<Marker, CustomMarker> mMarkersHashMap;
@@ -48,7 +54,6 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	
 	//hold a reference to all instances of sharwarma joints.
 	private ArrayList<CustomMarker> mMarkersArray = new ArrayList<CustomMarker>();
-	private ArrayList<Outlet> Outlets = new ArrayList<Outlet>();
 	
 	private static final float CAMERA_ZOOM_LEVEL = 15L;
 	//size of the area to get outlet information...
@@ -103,18 +108,6 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 					@Override
 					public void onClick(View v) {
 						//get current location coordinates
-						
-						//display order confirmation screen showing selected address and confirm button
-						
-						//display option to pay with verve or pay on delivery
-						
-						//create order request via http api
-						
-						//display order delivery progress screen...
-						
-						//display order collected confirmation screen
-						
-						//payWithVerve();
 						showOutlets();
 					}
 					
@@ -178,11 +171,10 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 			mapCenter = googleMap.getCameraPosition().target;
 			
 			txtLocation = (TextView)findViewById(R.id.mViewLocation);
+			getSupportLoaderManager().initLoader(0, null, this);
 			
 	        // Initialize the HashMap for Markers and MyMarker object
 	        mMarkersHashMap = new HashMap<Marker, CustomMarker>();
-
-	       
 	        
 	        location = googleMap.getMyLocation();
 	        
@@ -208,8 +200,6 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
             	Toast.makeText(getApplicationContext(), "location information unavailable", Toast.LENGTH_SHORT).show();
             	updateWithNewLocation(location);
             }
-
-	        getOutlets();
 
 			googleMap.setOnMarkerClickListener(new OnMarkerClickListener(){
 
@@ -251,13 +241,6 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		}
 	}
 
-	//TODO: remove this method in favor of a content provider...
-	private void getOutlets() {
-		OutletConnector _connector = new OutletConnector(this);
-		_connector.setAsyncCallback(this);
-		_connector.execute();
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -295,9 +278,6 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		}
 	}
 
-	
-	//add all sharwarma joints to the map
-	//the coordinates are retrieved via json from a web service....
 	private void plotMarkers(ArrayList<CustomMarker> markers)
 	{
 	    if(markers.size() > 0)
@@ -458,22 +438,61 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	}
 
 	@Override
-	public void OnTaskDone(Object result) {
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		Log.i(TAG, "onCreateLoader running...");
+		
+		String[] projection = new String[]{
+				OutletsContentProvider.KEY_ID,
+				OutletsContentProvider.KEY_OUTLET_ICON,
+				OutletsContentProvider.KEY_OUTLET_NAME,
+				OutletsContentProvider.KEY_OUTLET_LONGITUDE,
+				OutletsContentProvider.KEY_OUTLET_LATITUDE
+		};
+		
+		CursorLoader loader = new CursorLoader(this, OutletsContentProvider.CONTENT_URI, projection,null,null, null);
+		
+		Log.i(TAG, "onCreateLoader complete");
+		
+		return loader;
+	}
 
-		Outlets = (ArrayList<Outlet>) result;
-
-        if(!Outlets.isEmpty()){
-	        
-        	for (Outlet outlet : Outlets){
-	        	
-	        	mMarkersArray.add(new CustomMarker(outlet.getName(), 
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		Log.i(TAG, "onLoadFinished called..");
+		
+		int outletCount = 0;
+		mMarkersArray.clear();
+		
+		//number of outlets in the database..
+		outletCount = cursor.getCount();
+		
+		if(outletCount > 0){
+			cursor.moveToFirst();
+			
+			for(int i = 0; i < outletCount ; i++){
+				//draw markers on the map...
+				Outlet outlet = new Outlet(cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ICON)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LATITUDE)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LONGITUDE))
+				);
+				
+				mMarkersArray.add(new CustomMarker(outlet.getName(), 
 	        			outlet.getIcon(), 
 	        			Double.parseDouble(outlet.getLatitude()), 
 	        			Double.parseDouble(outlet.getLongitude()))
 	        	);
-	        }
-	        
+				
+				cursor.moveToNext();
+			}
+			
 	        plotMarkers(mMarkersArray);
-        }
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

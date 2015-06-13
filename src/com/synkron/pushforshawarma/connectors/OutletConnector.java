@@ -22,20 +22,15 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.apache.http.client.*;
-
 public class OutletConnector extends PushForShawarmaConnector{
 	private static final String TAG = "OutletConnector";
 	ProgressDialog _loadingDialog;
-	private static String API_OUTLETS_REPOSITORY_ENDPOINT = "http://104.131.13.155/pfs/outlets/";
 	private AsyncTaskCallback _asyncTaskCallback;
 	private ArrayList<Outlet> mOutlets;
-	
-	
-	//this constructor will be modified to take a gps filter object
-	//that will get outlets only within the region specified in the filter....
+
 	public OutletConnector(Context context){
-		_context = context;
+		super(context);
+		
 		mOutlets = new ArrayList<Outlet>();
 	}
 
@@ -63,7 +58,7 @@ public class OutletConnector extends PushForShawarmaConnector{
 		String sb = "";
 		
 	     try {
-	    	 if(super.isNetworkAvaialble()){
+	    	 if(super.isNetworkAvailable()){
 	             URL url = new URL(API_OUTLETS_REPOSITORY_ENDPOINT);
 	             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 	             connection.setReadTimeout(10000);
