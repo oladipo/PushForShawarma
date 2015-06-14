@@ -1,5 +1,6 @@
 package com.synkron.pushforshawarma;
 
+import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 import com.facebook.AppEventsLogger;
@@ -34,7 +35,7 @@ public class MainActivity extends ActionBarActivity{
 		super.onCreate(savedInstanceState);
 		
 		final TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-		Fabric.with(this, new Twitter(authConfig));
+		Fabric.with(this, new Twitter(authConfig), new Crashlytics());
 		
 		if(savedInstanceState == null){
 			socialLoginFragment = new SocialLoginFragment();

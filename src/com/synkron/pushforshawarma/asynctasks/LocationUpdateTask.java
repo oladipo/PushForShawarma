@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -54,7 +55,15 @@ public class LocationUpdateTask extends AsyncTask<String, String, String>{
 				}
 			}catch(IOException ioe){
 				Log.e(TAG, "updateWithNewLocation: Exception :" + ioe.getMessage());
-				Toast.makeText(_context, "data services unavailable", Toast.LENGTH_SHORT).show();
+				
+				Handler handler = new  Handler(_context.getMainLooper());
+				
+				handler.post(new Runnable(){
+					public void run(){
+						Toast.makeText(_context,"data services unavailable", Toast.LENGTH_SHORT).show();
+					}
+				});
+				
 				
 				//let us see what caused the cause of the error...
 				return ioe.getMessage();
