@@ -30,6 +30,10 @@ public class OutletsContentProvider extends ContentProvider{
 	public static final String KEY_OUTLET_ICON = "icon";
 	public static final String KEY_OUTLET_LONGITUDE = "longitude";
 	public static final String KEY_OUTLET_LATITUDE = "latitude";
+	public static final String KEY_OUTLET_ADDRESS = "address";
+	public static final String KEY_OUTLET_PHONE = "phone";
+	public static final String KEY_OUTLET_EMAIL = "email";
+	
 	public static final String KEY_SEARCH_COLUMN = KEY_OUTLET_NAME;
 	
 	private static final UriMatcher uriMatcher;
@@ -131,14 +135,11 @@ public class OutletsContentProvider extends ContentProvider{
 		SQLiteDatabase database = dbHelper.getWritableDatabase();
 		
 		String[] columns = new String[]{
-				OutletsContentProvider.KEY_OUTLET_ICON,
 				OutletsContentProvider.KEY_OUTLET_NAME,
 				OutletsContentProvider.KEY_OUTLET_LONGITUDE,
 				OutletsContentProvider.KEY_OUTLET_LATITUDE
 		};
 		
-		//TODO: there should be a much better way to check for duplicates in this case
-		//prevent duplicates by checking if the the content value already exists...
 		Cursor cursor = database.query(false, OutletsDBOpenHelper.DATABASE_TABLE, 
 				columns, KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
 				"' and "+ KEY_OUTLET_LONGITUDE + " = '"+ values.getAsString(KEY_OUTLET_LONGITUDE)+
@@ -155,6 +156,12 @@ public class OutletsContentProvider extends ContentProvider{
 				return _mUri;
 			}
 			throw new SQLException("Failed to insert row into "+ uri);
+		}else{
+			//update existing rows..
+			database.update(OutletsDBOpenHelper.DATABASE_TABLE, values, 
+					KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
+					"' and "+ KEY_OUTLET_LONGITUDE + " = '"+ values.getAsString(KEY_OUTLET_LONGITUDE)+
+					"' and "+ KEY_OUTLET_LATITUDE + " = '"+ values.getAsString(KEY_OUTLET_LATITUDE)+"'", null);
 		}
 		
 		return uri;

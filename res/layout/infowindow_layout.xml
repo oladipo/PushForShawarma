@@ -24,11 +24,22 @@
    </LinearLayout>
     
     <TextView
-        android:id="@+id/another_label"
+        android:id="@+id/address"
         android:layout_marginLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold" />
-
+    <TextView
+        android:id="@+id/phone"
+        android:layout_marginLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
+	<TextView
+        android:id="@+id/email"
+        android:layout_marginLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
 </LinearLayout>
 

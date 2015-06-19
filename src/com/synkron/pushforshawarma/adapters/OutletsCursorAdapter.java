@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 public class OutletsCursorAdapter extends CursorAdapter{
 
+	private static final String TAG = "OutletsCursorAdapter";
+	
 	LayoutInflater inflater;
 	
 	public OutletsCursorAdapter(Context context ,Cursor c, int flags) {
@@ -24,9 +26,14 @@ public class OutletsCursorAdapter extends CursorAdapter{
 	public void bindView(View view, Context context, Cursor cursor) {
 		
 		String outletName = cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME));
+		String outletAddress = cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ADDRESS));
+		
 		TextView txtVwName = (TextView) view.findViewById(R.id.OutletName);
+		TextView txtVwAddress = (TextView) view.findViewById(R.id.OutletAddress);
 		
 		txtVwName.setText(outletName);
+		txtVwAddress.setText(outletAddress);
+		
 	}
 
 	@Override

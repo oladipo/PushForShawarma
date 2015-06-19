@@ -24,6 +24,6 @@
     <string name="show_user_location_desc">show user location</string>
     <string name="favorite_locations_desc">favorite locations button</string>
     <string name="locationLabel">YOUR CURRENT ADDRESS</string>
-    <string name="title_activity_outlet_listings">OutletListingsActivity</string>
+    <string name="title_activity_outlet_listings">Outlets In Your Area</string>
 
 </resources>

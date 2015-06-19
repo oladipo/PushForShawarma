@@ -23,7 +23,6 @@
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/OutletName"
 		    android:layout_toRightOf="@+id/OutletLogo"
-		    android:text="57 Adeniyi Jones Avenue"
 		    android:singleLine="true"/>
 						
 </RelativeLayout>

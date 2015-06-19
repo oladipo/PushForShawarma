@@ -133,8 +133,11 @@ public class OutletsUpdateService extends IntentService{
 	 						String icon = innerObj.getString("Icon");
 	 						String longitude = innerObj.getString("Longitude");
 	 						String latitude = innerObj.getString("Latitude");
+	 						String Address =  innerObj.getString("Address");
+	 						String Phone =  innerObj.getString("Phone");
+	 						String Email =  innerObj.getString("Email");
 	 						
-	 						Outlet mOutlet = new Outlet(name, icon, longitude, latitude);
+	 						Outlet mOutlet = new Outlet(name, icon, longitude, latitude, Address, Phone, Email);
 	 						mOutlets.add(mOutlet); 						
 	 				}
 
@@ -146,6 +149,9 @@ public class OutletsUpdateService extends IntentService{
 	 						values.put(OutletsContentProvider.KEY_OUTLET_ICON, item.getIcon());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_LONGITUDE, item.getLongitude());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_LATITUDE, item.getLatitude());
+	 						values.put(OutletsContentProvider.KEY_OUTLET_ADDRESS, item.getAddress());
+	 						values.put(OutletsContentProvider.KEY_OUTLET_PHONE, item.getPhone());
+	 						values.put(OutletsContentProvider.KEY_OUTLET_EMAIL, item.getEmail());
 	 						
 	 						//this operation should be happen as a transaction...
 	 						context.getContentResolver().insert(OutletsContentProvider.CONTENT_URI, values);

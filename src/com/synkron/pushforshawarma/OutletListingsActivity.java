@@ -73,7 +73,10 @@ public class OutletListingsActivity extends ActionBarActivity implements LoaderM
 				OutletsContentProvider.KEY_OUTLET_ICON,
 				OutletsContentProvider.KEY_OUTLET_NAME,
 				OutletsContentProvider.KEY_OUTLET_LONGITUDE,
-				OutletsContentProvider.KEY_OUTLET_LATITUDE
+				OutletsContentProvider.KEY_OUTLET_LATITUDE,
+				OutletsContentProvider.KEY_OUTLET_ADDRESS,
+				OutletsContentProvider.KEY_OUTLET_PHONE,
+				OutletsContentProvider.KEY_OUTLET_EMAIL				
 		};
 		
 		CursorLoader loader = new CursorLoader(this, OutletsContentProvider.CONTENT_URI, projection,null,null, null);

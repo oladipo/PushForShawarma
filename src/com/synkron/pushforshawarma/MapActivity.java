@@ -287,12 +287,10 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 
 	            // Create user marker with custom icon and other options
 	            MarkerOptions markerOption = new MarkerOptions().flat(true)
-	            		//.draggable(true)
 	            		.position(new LatLng(myMarker.getmLatitude(), myMarker.getmLongitude()));
 	            
 	            markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_new));
 	            
-
 	            Marker currentMarker = googleMap.addMarker(markerOption);
 	            mMarkersHashMap.put(currentMarker, myMarker);
 
@@ -332,9 +330,12 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 
 		         markerLabel.setText(myMarker.getmLabel());
 		         
-		         TextView descLabel = (TextView)v.findViewById(R.id.another_label);
-		         descLabel.setText("Address: 67 Adeniyi Jones Ave, Ikeja Phone:0814 788 8746 Hours: Open today · 8:00 am – 6:00 pm");
+		         TextView addressLabel = (TextView)v.findViewById(R.id.address);
+		         addressLabel.setText(myMarker.getmAddress());
 
+		         TextView phoneLabel = (TextView)v.findViewById(R.id.phone);
+		         phoneLabel.setText(myMarker.getmPhone());
+		         
 		         return v;
 		     }
 		}
@@ -446,7 +447,10 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 				OutletsContentProvider.KEY_OUTLET_ICON,
 				OutletsContentProvider.KEY_OUTLET_NAME,
 				OutletsContentProvider.KEY_OUTLET_LONGITUDE,
-				OutletsContentProvider.KEY_OUTLET_LATITUDE
+				OutletsContentProvider.KEY_OUTLET_LATITUDE,
+				OutletsContentProvider.KEY_OUTLET_ADDRESS,
+				OutletsContentProvider.KEY_OUTLET_PHONE,
+				OutletsContentProvider.KEY_OUTLET_EMAIL
 		};
 		
 		CursorLoader loader = new CursorLoader(this, OutletsContentProvider.CONTENT_URI, projection,null,null, null);
@@ -474,13 +478,19 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 				Outlet outlet = new Outlet(cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME)),
 						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ICON)),
 						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LATITUDE)),
-						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LONGITUDE))
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LONGITUDE)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ADDRESS)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_PHONE)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_EMAIL))
 				);
 				
 				mMarkersArray.add(new CustomMarker(outlet.getName(), 
 	        			outlet.getIcon(), 
 	        			Double.parseDouble(outlet.getLatitude()), 
-	        			Double.parseDouble(outlet.getLongitude()))
+	        			Double.parseDouble(outlet.getLongitude()),
+	        			outlet.getAddress(),
+	        			outlet.getPhone(),
+	        			outlet.getEmail())
 	        	);
 				
 				cursor.moveToNext();

@@ -99,12 +99,12 @@ public final class R {
 		public static final int dgts__termsTextCreateAccount = 0x7f0d0086;
 		public static final int dgts__try_another_phone = 0x7f0d008f;
 		public static final int dgts__upload_contacts = 0x7f0d0089;
-		public static final int imageView = 0x7f0d00ab;
-		public static final int tw__allow_btn = 0x7f0d00ae;
-		public static final int tw__not_now_btn = 0x7f0d00ad;
-		public static final int tw__share_email_desc = 0x7f0d00ac;
-		public static final int tw__spinner = 0x7f0d00aa;
-		public static final int tw__web_view = 0x7f0d00a9;
+		public static final int imageView = 0x7f0d00ac;
+		public static final int tw__allow_btn = 0x7f0d00af;
+		public static final int tw__not_now_btn = 0x7f0d00ae;
+		public static final int tw__share_email_desc = 0x7f0d00ad;
+		public static final int tw__spinner = 0x7f0d00ab;
+		public static final int tw__web_view = 0x7f0d00aa;
 	}
 	public static final class layout {
 		public static final int dgts__activity_confirmation = 0x7f03002a;
