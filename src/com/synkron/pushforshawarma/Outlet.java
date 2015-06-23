@@ -1,6 +1,7 @@
 package com.synkron.pushforshawarma;
 
 public class Outlet {
+	public String Code;
 	public String Name;
 	public String Icon;
 	public String Latitude;
@@ -16,8 +17,9 @@ public class Outlet {
 		this.Longitude = Longitude;
 	}
 	
-	public Outlet(String Name, String Icon, String Latitude, String Longitude, String Address,
+	public Outlet(String Code, String Name, String Icon, String Latitude, String Longitude, String Address,
 			String Phone, String Email){
+		this.Code = Code;
 		this.Name = Name;
 		this.Icon = Icon;
 		this.Latitude = Latitude;
@@ -25,6 +27,10 @@ public class Outlet {
 		this.Address = Address;
 		this.Phone = Phone;
 		this.Email = Email;
+	}
+
+	public String getCode(){
+		return this.Code;
 	}
 	
 	public String getName(){

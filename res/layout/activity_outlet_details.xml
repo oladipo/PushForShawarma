@@ -1,0 +1,128 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.synkron.pushforshawarma.OutletDetailsActivity" >
+
+    <RelativeLayout android:id="@+id/Layout_Menu_Hours"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"	        
+	        android:orientation="horizontal"
+	        android:background="@color/light_gray">
+	        	
+	    <TextView
+	        android:id="@+id/Menu_Hours"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:drawableLeft="@drawable/clock"
+	        android:drawablePadding="@dimen/list_item_horizontal_margin"
+	        android:paddingLeft="@dimen/list_item_horizontal_margin"
+	        android:paddingTop="@dimen/list_item_horizontal_margin"
+	        android:paddingBottom="@dimen/list_item_horizontal_margin"
+	        android:text="Open Hours: 9:00 AM to 9:00 PM"
+	       	android:gravity="center_vertical"
+	        android:textStyle="bold" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/Layout_Most_Popular"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:orientation="horizontal" >
+   
+        <TextView
+            android:id="@+id/Most_Popular_Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/list_item_horizontal_margin"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingTop="@dimen/list_item_horizontal_margin"
+            android:text="Most Popular"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/Most_Popular_Header_Count"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingBottom="@dimen/list_item_horizontal_margin"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingRight="@dimen/list_item_horizontal_margin"
+            android:paddingTop="@dimen/list_item_horizontal_margin"
+            android:text=" | 5 Dishes >"
+            android:textColor="@color/white"
+            android:textStyle="bold" />		     
+    </LinearLayout>
+    
+    <HorizontalScrollView android:id="@+id/Layout_Most_Popular_Pics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+   		
+   		<LinearLayout android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@color/white"
+	        android:orientation="horizontal">
+	  	    <ImageView
+	  	        android:id="@+id/OutletLogo1"
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:padding="@dimen/horizontal_scroll_margin"
+	  	        android:contentDescription="shawarma"
+	  	        android:src="@drawable/chicken_shawarma" />
+	  	    <ImageView
+	  	        android:id="@+id/OutletLogo2"
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:contentDescription="shawarma"
+	  	        android:padding="@dimen/horizontal_scroll_margin"
+	  	        android:src="@drawable/chicken_shawarma" />	
+	  	     <ImageView
+	  	        android:id="@+id/OutletLogo3"
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:padding="@dimen/horizontal_scroll_margin"
+	  	        android:contentDescription="shawarma"
+	  	        android:src="@drawable/chicken_shawarma" />
+	  	     <ImageView
+	  	        android:id="@+id/OutletLogo4"
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:padding="@dimen/horizontal_scroll_margin"
+	  	        android:contentDescription="shawarma"
+	  	        android:src="@drawable/chicken_shawarma" />
+			<ImageView
+	  	        android:id="@+id/OutletLogo5"
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:padding="@dimen/horizontal_scroll_margin"
+	  	        android:contentDescription="shawarma"
+	  	        android:src="@drawable/chicken_shawarma" />
+  	     </LinearLayout>
+  	     
+    </HorizontalScrollView>
+    
+    <LinearLayout
+        android:id="@+id/Layout_Menu_Header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:orientation="horizontal" >
+   
+        <TextView
+            android:id="@+id/Menu_Popular_Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/list_item_horizontal_margin"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingTop="@dimen/list_item_horizontal_margin"
+            android:text="Menu"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+		     
+    </LinearLayout>    
+</LinearLayout>

@@ -26,6 +26,7 @@ public class OutletsContentProvider extends ContentProvider{
 	
 	//database columns constants
 	public static final String KEY_ID = "_id";
+	public static final String KEY_OUTLET_CODE = "code";
 	public static final String KEY_OUTLET_NAME = "name";
 	public static final String KEY_OUTLET_ICON = "icon";
 	public static final String KEY_OUTLET_LONGITUDE = "longitude";
@@ -43,9 +44,9 @@ public class OutletsContentProvider extends ContentProvider{
 	static{
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI("com.synkron.pushforshawarma.contentproviders.OutletsContentProvider",
-				"stocks", ALLROWS);
+				"outlets", ALLROWS);
 		uriMatcher.addURI("com.synkron.pushforshawarma.contentproviders.OutletsContentProvider", 
-				"stocks/#", SINGLE_ROW);
+				"outlets/#", SINGLE_ROW);
 		uriMatcher.addURI("com.synkron.pushforshawarma.contentproviders.OutletsContentProvider",
 				SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH);
 		uriMatcher.addURI("com.synkron.pushforshawarma.contentproviders.OutletsContentProvider",
@@ -159,9 +160,15 @@ public class OutletsContentProvider extends ContentProvider{
 		}else{
 			//update existing rows..
 			database.update(OutletsDBOpenHelper.DATABASE_TABLE, values, 
-					KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
+					KEY_OUTLET_CODE + " = '" + values.getAsString(KEY_OUTLET_CODE)+
+					"' and "+ KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
 					"' and "+ KEY_OUTLET_LONGITUDE + " = '"+ values.getAsString(KEY_OUTLET_LONGITUDE)+
+					"' and "+ KEY_OUTLET_ADDRESS + " = '"+ values.getAsString(KEY_OUTLET_ADDRESS)+
+					"' and "+ KEY_OUTLET_PHONE + " = '"+ values.getAsString(KEY_OUTLET_PHONE)+
+					"' and "+ KEY_OUTLET_EMAIL + " = '"+ values.getAsString(KEY_OUTLET_EMAIL)+
 					"' and "+ KEY_OUTLET_LATITUDE + " = '"+ values.getAsString(KEY_OUTLET_LATITUDE)+"'", null);
+			
+			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		
 		return uri;

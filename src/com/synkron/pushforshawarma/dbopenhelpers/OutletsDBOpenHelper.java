@@ -14,10 +14,11 @@ public class OutletsDBOpenHelper extends SQLiteOpenHelper{
 	
 	public static final String DATABASE_NAME = "pushForShawarma.db";
 	public static final String DATABASE_TABLE = "OutletsTable";
-	public static final int DATABASE_VERSION = 5;
+	public static final int DATABASE_VERSION = 6;
 	
 	private static final String DATABASE_CREATE = "create table "+ DATABASE_TABLE + " ("
 			+ OutletsContentProvider.KEY_ID + " integer primary key autoincrement,"
+			+ OutletsContentProvider.KEY_OUTLET_CODE  + " TEXT,"
 			+ OutletsContentProvider.KEY_OUTLET_ICON + " TEXT,"
 			+ OutletsContentProvider.KEY_OUTLET_NAME+ " TEXT,"
 			+ OutletsContentProvider.KEY_OUTLET_LATITUDE+ " TEXT,"

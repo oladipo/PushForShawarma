@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.synkron.pushforshawarma.*;
 import com.synkron.pushforshawarma.Outlet;
-import com.synkron.pushforshawarma.OutletListingsActivity;
 import com.synkron.pushforshawarma.broadcastreceivers.DeviceBootCompleteReceiver;
 import com.synkron.pushforshawarma.broadcastreceivers.OutletsUpdateAlarmReceiver;
 import com.synkron.pushforshawarma.connectors.PushForShawarmaConnector;
@@ -127,17 +127,18 @@ public class OutletsUpdateService extends IntentService{
 	 				for(int i = 0; i < jsonArray.length(); i++){
 	 						JSONObject innerObj = jsonArray.getJSONObject(i);
 	 						
+	 						String code =  innerObj.getString("Code");
 	 						String name = innerObj.getString("Name");
-	 						
 	 						//TODO: icon should be a web resource not an app resource..
 	 						String icon = innerObj.getString("Icon");
 	 						String longitude = innerObj.getString("Longitude");
 	 						String latitude = innerObj.getString("Latitude");
-	 						String Address =  innerObj.getString("Address");
-	 						String Phone =  innerObj.getString("Phone");
-	 						String Email =  innerObj.getString("Email");
+	 						String address =  innerObj.getString("Address");
+	 						String phone =  innerObj.getString("Phone");
+	 						String email =  innerObj.getString("Email");
 	 						
-	 						Outlet mOutlet = new Outlet(name, icon, longitude, latitude, Address, Phone, Email);
+	 						
+	 						Outlet mOutlet = new Outlet(code, name, icon, longitude, latitude, address, phone, email);
 	 						mOutlets.add(mOutlet); 						
 	 				}
 
@@ -145,6 +146,7 @@ public class OutletsUpdateService extends IntentService{
 	 						for(Outlet item : mOutlets){
 	 					
 	 						ContentValues values = new ContentValues();
+	 						values.put(OutletsContentProvider.KEY_OUTLET_CODE, item.getCode());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_NAME, item.getName());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_ICON, item.getIcon());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_LONGITUDE, item.getLongitude());
@@ -175,7 +177,7 @@ public class OutletsUpdateService extends IntentService{
 	}
 	
 	public void notifyMe(){
-		Intent intent = new Intent(this, OutletListingsActivity.class);
+		Intent intent = new Intent(this, OutletDetailsActivity.class);
 		PendingIntent theIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		
 		NotificationCompat.Builder builder = new  NotificationCompat.Builder(this);

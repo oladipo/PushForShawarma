@@ -18,4 +18,17 @@
     </style>
 
     <color name="light_gray">#D3D3D3</color>
+	<color name="layout_background_001">#C0C0C0</color>
+	<color name="dim_gray">#696969</color>
+	<color name="dark_gray">#A9A9A9</color>
+	<color name="silver">#C0C0C0</color>
+	<color name="white">#FFFFFF</color>
+	<color name="orange">#E1AE22</color>
+    <style name="outletRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>
+    
+
 </resources>

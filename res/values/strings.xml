@@ -25,5 +25,7 @@
     <string name="favorite_locations_desc">favorite locations button</string>
     <string name="locationLabel">YOUR CURRENT ADDRESS</string>
     <string name="title_activity_outlet_listings">Outlets In Your Area</string>
-
+    <string name="outlet_logo">graphic outlet logo</string>
+    <string name="title_activity_outlet_details">OutletDetailsActivity</string>
+	<string name="action_search">Search</string>
 </resources>

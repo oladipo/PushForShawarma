@@ -120,6 +120,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	
 	public void showOutlets(){
 		Intent intent = new Intent(this, OutletListingsActivity.class);
+		intent.putExtra("USER_LOCATION_ADDRESS", txtLocation.getText());
 		startActivity(intent);
 	}
 	@Override
@@ -444,6 +445,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		
 		String[] projection = new String[]{
 				OutletsContentProvider.KEY_ID,
+				OutletsContentProvider.KEY_OUTLET_CODE,				
 				OutletsContentProvider.KEY_OUTLET_ICON,
 				OutletsContentProvider.KEY_OUTLET_NAME,
 				OutletsContentProvider.KEY_OUTLET_LONGITUDE,
@@ -475,7 +477,8 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 			
 			for(int i = 0; i < outletCount ; i++){
 				//draw markers on the map...
-				Outlet outlet = new Outlet(cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME)),
+				Outlet outlet = new Outlet(cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_CODE)),
+						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME)),
 						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ICON)),
 						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LATITUDE)),
 						cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_LONGITUDE)),
