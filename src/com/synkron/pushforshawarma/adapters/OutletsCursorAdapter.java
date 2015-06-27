@@ -27,11 +27,14 @@ public class OutletsCursorAdapter extends CursorAdapter{
 		
 		String outletName = cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_NAME));
 		String outletAddress = cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_ADDRESS));
+		String outletCode = cursor.getString(cursor.getColumnIndex(OutletsContentProvider.KEY_OUTLET_CODE));
 		
 		TextView txtVwName = (TextView) view.findViewById(R.id.OutletName);
 		TextView txtVwAddress = (TextView) view.findViewById(R.id.OutletAddress);
 		
 		txtVwName.setText(outletName);
+		txtVwName.setTag(outletCode);
+		
 		txtVwAddress.setText(outletAddress);
 		
 	}

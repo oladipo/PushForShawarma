@@ -1,0 +1,239 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.synkron.pushforshawarma.MenuDetailsActivity" >
+    
+    <ImageView
+		android:id="@+id/menuBanner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:contentDescription="@string/outlet_logo"
+		android:scaleType="fitXY"
+		android:src="@drawable/beef_shawarma_large" />
+	
+	<GridLayout android:id="@+id/Layout_Menu_Details"
+		android:layout_width="match_parent"
+		android:layout_alignBottom="@+id/menuBanner"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:background="#7000"
+		android:columnCount="2"
+		android:rowCount="1">
+		
+	    <LinearLayout android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:orientation="vertical">
+      
+	      <TextView
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:shadowColor="#000"
+	          android:shadowDx="3"
+	          android:shadowDy="3"
+	          android:paddingTop="@dimen/list_item_vertical_margin"
+	          android:paddingLeft="@dimen/activity_horizontal_margin"
+	          android:shadowRadius="6"
+	          android:text="Beef Single"
+	          android:textColor="#FFF"
+	          android:textStyle="bold" />
+	
+	      <TextView
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:paddingLeft="@dimen/activity_horizontal_margin"
+	          android:paddingBottom="@dimen/list_item_vertical_margin"
+	          android:text="Beef + 1 Hot Dog"
+	          android:textColor="#CCC" />
+    	</LinearLayout>
+	    <TextView
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:shadowColor="#000"
+	          android:layout_gravity="right"
+	          android:shadowDx="3"
+	          android:shadowDy="3"
+	          android:paddingTop="@dimen/activity_vertical_margin"
+	          android:paddingRight="@dimen/activity_horizontal_margin"
+	          android:shadowRadius="6"
+	          android:text="650.00"
+	          android:textSize="20sp"
+	          android:textColor="#FFF"
+	          android:textStyle="bold" />
+	</GridLayout>
+	
+	<GridLayout android:id="@+id/Layout_Quantity_Info"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:columnCount="2"
+		android:layout_below="@+id/Layout_Menu_Details"
+		android:rowCount="1">
+		
+	    <LinearLayout android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:orientation="vertical">
+      
+	      <TextView
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:paddingTop="@dimen/list_control_vertical_margin"
+	          android:paddingBottom="@dimen/list_item_vertical_margin"
+	          android:paddingLeft="@dimen/activity_horizontal_margin"
+	          android:text="Quantity" />
+	
+
+    	</LinearLayout>
+	    
+	    <LinearLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="right">
+	      
+	    <Button
+	        android:layout_width="25dp"
+	        android:layout_height="25dp"
+	        android:background="@color/orange"
+	        android:layout_marginRight="@dimen/list_control_horizontal_margin"	    
+	        android:layout_marginTop="@dimen/list_item_vertical_margin"	  
+	        android:layout_marginBottom="@dimen/list_item_vertical_margin"	 
+	        android:text="-"
+	        android:textStyle="bold"
+	        android:textColor="@color/white"
+	        android:textSize="20sp" />
+	    
+	    <EditText
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="@dimen/list_control_horizontal_margin"
+	        android:layout_marginTop="@dimen/list_item_vertical_margin"
+	        android:background="@drawable/rect_text_edit"
+	        android:inputType="number"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	        android:shadowRadius="6"
+	        android:text="1"
+	        android:width="25dp" />
+	    
+	    <Button
+	        android:layout_width="25dp"
+	        android:layout_height="25dp"
+	        android:background="@color/blue"
+	        android:textColor="@color/white"
+	        android:layout_marginRight="@dimen/activity_horizontal_margin"	    
+	        android:layout_marginTop="@dimen/list_item_vertical_margin"	 
+			android:layout_marginBottom="@dimen/list_item_vertical_margin"	            
+	        android:text="+"
+	        android:textStyle="bold"
+	        android:textSize="20sp" />
+	    
+	    </LinearLayout>
+	    
+	</GridLayout>
+	
+		
+    <LinearLayout android:layout_width="match_parent"
+		android:id="@+id/Layout_Additional_Options"
+		android:layout_height="wrap_content"
+		android:background="@color/gray"
+		android:layout_below="@+id/Layout_Quantity_Info"
+		android:orientation="vertical">
+     
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="@dimen/list_control_vertical_margin"
+          android:paddingBottom="@dimen/list_item_vertical_margin"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:text="Additional Options"
+          android:textColor="@color/white" />
+
+   	</LinearLayout>	  
+   	  
+	<GridLayout android:id="@+id/Layout_Additional_Options_Text"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/Layout_Additional_Options"
+		android:layout_alignParentLeft="true"
+		
+		android:columnCount="2"
+		android:rowCount="1">
+		
+	    <LinearLayout android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:orientation="vertical">
+      
+	      <TextView
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:paddingTop="@dimen/list_item_vertical_margin"
+	          android:paddingLeft="@dimen/activity_horizontal_margin"
+	          android:textSize="@dimen/font_size_medium"
+	          android:text="Make it With"/>
+	
+	      <TextView
+	          android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:paddingLeft="@dimen/activity_horizontal_margin"
+	          android:paddingBottom="@dimen/list_item_vertical_margin"
+	          android:textSize="@dimen/font_size_small"
+	          android:text="Vegetable"/>
+    	</LinearLayout>
+	    <ImageView
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_gravity="right"
+	          android:src="@drawable/ic_action"
+	          android:layout_marginTop="@dimen/list_control_vertical_margin"
+	          android:paddingRight="@dimen/activity_horizontal_margin" />
+	</GridLayout>
+
+    <LinearLayout
+        android:id="@+id/Layout_Special_Instructions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Layout_Additional_Options_Text"
+        android:background="@color/light_blue"
+        android:orientation="vertical" >
+	    
+      	<TextView
+      	    android:layout_width="match_parent"
+      	    android:layout_height="wrap_content"
+      	    android:paddingBottom="@dimen/list_item_vertical_margin"
+      	    android:paddingLeft="@dimen/activity_horizontal_margin"
+      	    android:paddingTop="@dimen/list_item_vertical_margin"
+      	    android:text="Special Instructions"
+      	    android:textSize="@dimen/font_size_medium"
+      	    android:textStyle="bold" />
+      	
+      	<EditText
+      	    android:layout_width="fill_parent"
+      	    android:layout_height="110dp"
+      	    android:layout_marginBottom="@dimen/list_item_vertical_margin"
+      	    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      	    android:layout_marginRight="@dimen/activity_horizontal_margin"
+      	    android:background="@color/white"
+      	    android:textSize="20sp"
+      	    android:textStyle="bold"
+      	    android:width="25dp" />
+
+      	<TextView
+      	    android:layout_width="match_parent"
+      	    android:layout_height="wrap_content"
+      	    android:paddingBottom="@dimen/list_item_vertical_margin"
+      	    android:paddingLeft="@dimen/activity_horizontal_margin"
+      	    android:text="Example extra cheese, side of dressing etc"
+      	    android:textSize="@dimen/font_size_small"
+      	    android:textStyle="bold" />
+
+      	<TextView
+      	    android:layout_width="match_parent"
+      	    android:layout_height="wrap_content"
+      	    android:paddingBottom="@dimen/list_item_vertical_margin"
+      	    android:paddingLeft="@dimen/activity_horizontal_margin"
+      	    android:text="Additional Charges may apply"
+      	    android:textSize="@dimen/font_size_small"
+      	    android:textStyle="bold" />
+      	
+    </LinearLayout>
+</RelativeLayout>

@@ -158,87 +158,94 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 
 	@SuppressLint("NewApi") 
 	private void initializeMap() {
-		if (googleMap == null){
-			
-			googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-			googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-			
-			uiSettings = googleMap.getUiSettings();
-			uiSettings.setTiltGesturesEnabled(false);
-			uiSettings.setMyLocationButtonEnabled(false);
-			//googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
-			googleMap.setMyLocationEnabled(true);
-			
-			mapCenter = googleMap.getCameraPosition().target;
-			
-			txtLocation = (TextView)findViewById(R.id.mViewLocation);
-			getSupportLoaderManager().initLoader(0, null, this);
-			
-	        // Initialize the HashMap for Markers and MyMarker object
-	        mMarkersHashMap = new HashMap<Marker, CustomMarker>();
-	        
-	        location = googleMap.getMyLocation();
-	        
-	        if(location == null){
-	        	//get last known location
-		        location = getCurrentLocation();	        	
-	        }
-	        
-	        if (location != null){
-	        	
-		        updateWithNewLocation(location);
+		try{
+			if (googleMap == null){
+				
+				googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+				googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+				
+				uiSettings = googleMap.getUiSettings();
+				uiSettings.setTiltGesturesEnabled(false);
+				uiSettings.setMyLocationButtonEnabled(false);
+				//googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+				googleMap.setMyLocationEnabled(true);
+				
+				mapCenter = googleMap.getCameraPosition().target;
+				
+				txtLocation = (TextView)findViewById(R.id.mViewLocation);
+				getSupportLoaderManager().initLoader(0, null, this);
+				
+		        // Initialize the HashMap for Markers and MyMarker object
+		        mMarkersHashMap = new HashMap<Marker, CustomMarker>();
 		        
-	        	googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(location.getLatitude(), location.getLongitude()), CAMERA_ZOOM_LEVEL));
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                						.target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-						                .zoom(CAMERA_ZOOM_LEVEL)
-						                .build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            }else{
-            	Toast.makeText(getApplicationContext(), "location information unavailable", Toast.LENGTH_SHORT).show();
-            	updateWithNewLocation(location);
-            }
-
-			googleMap.setOnMarkerClickListener(new OnMarkerClickListener(){
-
-				@Override
-				public boolean onMarkerClick(Marker marker) {
-					marker.showInfoWindow();
-					
-					return true;
-				}
-			});
-			
-			googleMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
-
-				@Override
-				public void onMyLocationChange(Location arg0) {
-					location = arg0;
-					
-					//updateWithNewLocation(arg0);
-				}
+		        location = googleMap.getMyLocation();
+		        
+		        if(location == null){
+		        	//get last known location
+			        location = getCurrentLocation();	        	
+		        }
+		        
+		        if (location != null){
+		        	
+			        updateWithNewLocation(location);
+			        
+		        	googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+	                        new LatLng(location.getLatitude(), location.getLongitude()), CAMERA_ZOOM_LEVEL));
+	
+	                CameraPosition cameraPosition = new CameraPosition.Builder()
+	                						.target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+							                .zoom(CAMERA_ZOOM_LEVEL)
+							                .build();
+	                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+	
+	            }else{
+	            	Toast.makeText(getApplicationContext(), "location information unavailable", Toast.LENGTH_SHORT).show();
+	            	updateWithNewLocation(location);
+	            }
+	
+				googleMap.setOnMarkerClickListener(new OnMarkerClickListener(){
+	
+					@Override
+					public boolean onMarkerClick(Marker marker) {
+						marker.showInfoWindow();
+						
+						return true;
+					}
+				});
 				
-			});
-			             
-			googleMap.setOnCameraChangeListener(new OnCameraChangeListener(){
-
-				@Override
-				public void onCameraChange(CameraPosition position) {
-		            //updateWithNewLocation(location); 
+				googleMap.setOnMyLocationChangeListener(new OnMyLocationChangeListener(){
+	
+					@Override
+					public void onMyLocationChange(Location arg0) {
+						location = arg0;
+						
+						//updateWithNewLocation(arg0);
+					}
 					
-					//check if user has moved out the specified data retrieval 
-					//distance interval for outlets.. location - USER_DATA_INTERVAL
+				});
+				             
+				googleMap.setOnCameraChangeListener(new OnCameraChangeListener(){
+	
+					@Override
+					public void onCameraChange(CameraPosition position) {
+			            //updateWithNewLocation(location); 
+						
+						//check if user has moved out the specified data retrieval 
+						//distance interval for outlets.. location - USER_DATA_INTERVAL
+						
+						// get next outlet data chunk..
+					}
 					
-					// get next outlet data chunk..
-				}
+				});
 				
-			});
-			if(googleMap == null){
-				Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+				if(googleMap == null){
+					Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+				}
 			}
+		}catch(Exception Ex){
+			Toast.makeText(getApplicationContext(), 
+					"Sorry! unable to create maps" + Ex.getMessage() +
+					" Google Play Services may not be available", Toast.LENGTH_SHORT).show();
 		}
 	}
 

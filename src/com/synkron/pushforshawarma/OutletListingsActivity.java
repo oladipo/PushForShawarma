@@ -77,16 +77,18 @@ public class OutletListingsActivity extends ActionBarActivity implements LoaderM
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				showOutletDetails(id);
+				TextView outletCode = (TextView) view.findViewById(R.id.OutletName);
+				showOutletDetails(id, outletCode.getTag().toString());
 			}
 			
 		});
 	}
 
-	public void showOutletDetails(long outletID){
+	public void showOutletDetails(long outletID, String outletCode){
 		//fire implicit intent 
 		Intent intent = new Intent(AppConstants.ACTION_VIEW_OUTLET);
 		
+		intent.putExtra("OUTLET_CODE", outletCode);
 		intent.putExtra("OUTLET_URI", 
 			Uri.withAppendedPath(OutletsContentProvider.CONTENT_URI, String.valueOf(outletID)).toString());
 		
@@ -137,6 +139,7 @@ public class OutletListingsActivity extends ActionBarActivity implements LoaderM
 		
 		String[] projection = new String[]{
 				OutletsContentProvider.KEY_ID,
+				OutletsContentProvider.KEY_OUTLET_CODE,
 				OutletsContentProvider.KEY_OUTLET_ICON,
 				OutletsContentProvider.KEY_OUTLET_NAME,
 				OutletsContentProvider.KEY_OUTLET_LONGITUDE,

@@ -1,14 +1,14 @@
 package com.synkron.pushforshawarma;
 
 public class Outlet {
-	public String Code;
-	public String Name;
-	public String Icon;
-	public String Latitude;
-	public String Longitude;
-	public String Address;
-	public String Phone;
-	public String Email;
+	private String Code;
+	private String Name;
+	private String Icon;
+	private String Latitude;
+	private String Longitude;
+	private String Address;
+	private String Phone;
+	private String Email;
 	
 	public Outlet(String Name, String Icon, String Latitude, String Longitude){
 		this.Name = Name;

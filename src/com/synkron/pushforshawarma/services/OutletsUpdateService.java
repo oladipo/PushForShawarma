@@ -11,10 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.synkron.pushforshawarma.*;
-import com.synkron.pushforshawarma.Outlet;
 import com.synkron.pushforshawarma.broadcastreceivers.DeviceBootCompleteReceiver;
 import com.synkron.pushforshawarma.broadcastreceivers.OutletsUpdateAlarmReceiver;
 import com.synkron.pushforshawarma.connectors.PushForShawarmaConnector;
+import com.synkron.pushforshawarma.contentproviders.MenusContentProvider;
 import com.synkron.pushforshawarma.contentproviders.OutletsContentProvider;
 
 import com.synkron.pushforshawarma.R;
@@ -40,6 +40,8 @@ public class OutletsUpdateService extends IntentService{
 	private PushForShawarmaConnector _connector;
 	private Context context;
 	private ArrayList<Outlet> mOutlets;
+	private ArrayList<Menu> mMenus;
+	
 	private AlarmManager alarmManager;
 	private PendingIntent pendingIntent;
 	
@@ -50,6 +52,7 @@ public class OutletsUpdateService extends IntentService{
 	public OutletsUpdateService() {
 		super(TAG);
 		mOutlets = new ArrayList<Outlet>();
+		mMenus = new ArrayList<Menu>();
 	}
 	
 	@Override
@@ -121,30 +124,47 @@ public class OutletsUpdateService extends IntentService{
 	             Log.d(TAG, _Result);
 	             
 	             try {
-	 				JSONObject obj = new JSONObject(_Result);
-	 				JSONArray jsonArray = obj.getJSONArray("outlets");
-	 				
-	 				for(int i = 0; i < jsonArray.length(); i++){
-	 						JSONObject innerObj = jsonArray.getJSONObject(i);
-	 						
-	 						String code =  innerObj.getString("Code");
-	 						String name = innerObj.getString("Name");
-	 						//TODO: icon should be a web resource not an app resource..
-	 						String icon = innerObj.getString("Icon");
-	 						String longitude = innerObj.getString("Longitude");
-	 						String latitude = innerObj.getString("Latitude");
-	 						String address =  innerObj.getString("Address");
-	 						String phone =  innerObj.getString("Phone");
-	 						String email =  innerObj.getString("Email");
-	 						
-	 						
-	 						Outlet mOutlet = new Outlet(code, name, icon, longitude, latitude, address, phone, email);
-	 						mOutlets.add(mOutlet); 						
+	            	 JSONObject obj = new JSONObject(_Result);
+	            	 JSONArray jsonArray = obj.getJSONArray("outlets");
+	            	 
+	            	 for(int i = 0; i < jsonArray.length(); i++){
+	            		 JSONObject innerObj = jsonArray.getJSONObject(i);
+	            		 
+	            		 String code =  innerObj.getString("Code");
+	            		 String name = innerObj.getString("Name");
+
+						//TODO: icon should be a web resource not an app resource..
+						String icon = innerObj.getString("Icon");
+						String longitude = innerObj.getString("Longitude");
+						String latitude = innerObj.getString("Latitude");
+						String address =  innerObj.getString("Address");
+						String phone =  innerObj.getString("Phone");
+						String email =  innerObj.getString("Email");
+						
+						Outlet mOutlet = new Outlet(code, name, icon, longitude, latitude, address, phone, email);
+ 						mOutlets.add(mOutlet); 	
+ 						
+ 						JSONArray menuArray = innerObj.getJSONArray("Menus");
+ 						
+ 						for(int j = 0; j < menuArray.length(); j++){
+ 							JSONObject menuObject = menuArray.getJSONObject(j);
+ 	 						
+ 							if(menuObject != null){
+ 								String menuCode = menuObject.getString("Code");
+ 								String outletCode = code;
+ 								String menuName = menuObject.getString("Name");
+ 								String description = menuObject.getString("Description");
+ 								String price = menuObject.getString("Price");
+ 								
+ 								Menu menu = new Menu(menuCode, outletCode, menuName, price, description);
+ 								mMenus.add(menu);
+ 							} 							
+ 						}
+
 	 				}
 
  					if(!mOutlets.isEmpty()){
-	 						for(Outlet item : mOutlets){
-	 					
+ 						for(Outlet item : mOutlets){
 	 						ContentValues values = new ContentValues();
 	 						values.put(OutletsContentProvider.KEY_OUTLET_CODE, item.getCode());
 	 						values.put(OutletsContentProvider.KEY_OUTLET_NAME, item.getName());
@@ -160,6 +180,22 @@ public class OutletsUpdateService extends IntentService{
 	 					}
  					}
  					
+ 					if(!mMenus.isEmpty()){
+ 						for(Menu menu : mMenus){
+ 							ContentValues contentValues = new ContentValues();
+ 							
+ 							contentValues.put(MenusContentProvider.KEY_OUTLET_CODE, menu.getOutletCode());
+ 							contentValues.put(MenusContentProvider.KEY_MENU_CODE, menu.getCode());
+ 							contentValues.put(MenusContentProvider.KEY_MENU_NAME, menu.getName());
+ 							contentValues.put(MenusContentProvider.KEY_MENU_DESCRIPTION, menu.getDescription());
+ 							contentValues.put(MenusContentProvider.KEY_MENU_PRICE, menu.getPrice());
+
+ 							//TODO: icon should be a web resource not an app resource.. 							
+ 							contentValues.put(MenusContentProvider.KEY_MENU_IMAGE_URL, "shawarma");
+	 						//this operation should be happen as a transaction...
+	 						context.getContentResolver().insert(MenusContentProvider.CONTENT_URI, contentValues);
+ 						}
+ 					}
 	    		}catch(Exception Ex){
 	    			Log.e(TAG, "Exception: "+ Ex.getMessage());
 	    		}

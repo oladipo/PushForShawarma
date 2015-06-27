@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"    
+    tools:context="com.synkron.pushforshawarma.MenuDetailsActivity" >
+    
+    <item android:id="@+id/action_save"
+          app:showAsAction="always"
+          android:icon="@drawable/ic_action_save"
+          android:title="@string/action_save" />
+    
+</menu>

@@ -38,7 +38,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+		<activity
+            android:name=".OutletDetailsActivity"
+            android:parentActivityName=".MenuDetailsActivity" 
+            android:label="@string/title_activity_outlet_details" >
+            
+            <!-- Parent activity meta-data to support API level 7+ -->
+        	<meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".MenuDetailsActivity" />
+        	
+            <intent-filter>
+                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_OUTLET" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MenuDetailsActivity"
+            android:parentActivityName="" 
+            android:label="@string/title_activity_menu_details">
+            <intent-filter>
+                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_MENU_ITEM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>            
+        </activity>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+        </activity>
+        <activity
+            android:name=".OutletListingsActivity"
+            android:label="@string/title_activity_outlet_listings" >
+        </activity>        
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -102,18 +133,18 @@
             android:name="com.crashlytics.ApiKey"
             android:value="e4bafaa033519fe36bc3ff03853581f81a809d8b" />
 
-        <activity
-            android:name=".UserProfileActivity"
-            android:label="@string/title_activity_user_profile" >
-        </activity>
-        <activity
-            android:name=".OutletListingsActivity"
-            android:label="@string/title_activity_outlet_listings" >
-        </activity>
+
 
         <provider
             android:name=".contentproviders.OutletsContentProvider"
             android:authorities="com.synkron.pushforshawarma.contentproviders.OutletsContentProvider" >
+            <path-permission
+                android:pathPrefix="/search_suggest_query"
+                android:readPermission="android.permission.GLOBAL_SEARCH" />
+        </provider>
+        <provider
+            android:name=".contentproviders.MenusContentProvider"
+            android:authorities="com.synkron.pushforshawarma.contentproviders.MenusContentProvider" >
             <path-permission
                 android:pathPrefix="/search_suggest_query"
                 android:readPermission="android.permission.GLOBAL_SEARCH" />
@@ -132,21 +163,15 @@
                 </action>
             </intent-filter>
         </receiver>
-        <receiver android:name=".broadcastreceivers.OutletsUpdateAlarmReceiver" android:exported="false">
+        <receiver
+            android:name=".broadcastreceivers.OutletsUpdateAlarmReceiver"
+            android:exported="false" >
             <intent-filter>
-                <action android:name="com.synkron.pushforshawarma.ACTION_UPDATE_OUTLETS_ALARM">
+                <action android:name="com.synkron.pushforshawarma.ACTION_UPDATE_OUTLETS_ALARM" >
                 </action>
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".OutletDetailsActivity"
-            android:label="@string/title_activity_outlet_details">
-            <intent-filter>
-                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_OUTLET" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

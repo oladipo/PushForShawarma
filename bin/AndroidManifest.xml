@@ -21,7 +21,26 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+		<activity android:label="@string/title_activity_outlet_details" android:name="com.synkron.pushforshawarma.OutletDetailsActivity" android:parentActivityName="com.synkron.pushforshawarma.MenuDetailsActivity">
+            
+            <!-- Parent activity meta-data to support API level 7+ -->
+        	<meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MenuDetailsActivity"/>
+        	
+            <intent-filter>
+                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_OUTLET"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:label="@string/title_activity_menu_details" android:name="com.synkron.pushforshawarma.MenuDetailsActivity" android:parentActivityName="">
+            <intent-filter>
+                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_MENU_ITEM"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>            
+        </activity>
+        <activity android:label="@string/title_activity_user_profile" android:name="com.synkron.pushforshawarma.UserProfileActivity">
+        </activity>
+        <activity android:label="@string/title_activity_outlet_listings" android:name="com.synkron.pushforshawarma.OutletListingsActivity">
+        </activity>        
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCnxU3LuWtGBqvguzzoKCVHeV7fmsD5FL0"/>
 
@@ -55,12 +74,12 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.crashlytics.ApiKey" android:value="e4bafaa033519fe36bc3ff03853581f81a809d8b"/>
 
-        <activity android:label="@string/title_activity_user_profile" android:name="com.synkron.pushforshawarma.UserProfileActivity">
-        </activity>
-        <activity android:label="@string/title_activity_outlet_listings" android:name="com.synkron.pushforshawarma.OutletListingsActivity">
-        </activity>
+
 
         <provider android:authorities="com.synkron.pushforshawarma.contentproviders.OutletsContentProvider" android:name="com.synkron.pushforshawarma.contentproviders.OutletsContentProvider">
+            <path-permission android:pathPrefix="/search_suggest_query" android:readPermission="android.permission.GLOBAL_SEARCH"/>
+        </provider>
+        <provider android:authorities="com.synkron.pushforshawarma.contentproviders.MenusContentProvider" android:name="com.synkron.pushforshawarma.contentproviders.MenusContentProvider">
             <path-permission android:pathPrefix="/search_suggest_query" android:readPermission="android.permission.GLOBAL_SEARCH"/>
         </provider>
 
@@ -78,13 +97,6 @@
                 </action>
             </intent-filter>
         </receiver>
-
-        <activity android:label="@string/title_activity_outlet_details" android:name="com.synkron.pushforshawarma.OutletDetailsActivity">
-            <intent-filter>
-                <action android:name="com.synkron.pushforshawarma.ACTION_VIEW_OUTLET"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
         <activity android:configChanges="orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:name="com.digits.sdk.android.PhoneNumberActivity" android:taskAffinity="com.digits.sdk.android" android:windowSoftInputMode="stateVisible"/>
         <activity android:configChanges="orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:name="com.digits.sdk.android.ConfirmationCodeActivity" android:taskAffinity="com.digits.sdk.android" android:windowSoftInputMode="stateVisible"/>
         <activity android:configChanges="orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.digits.sdk.android.LoginCodeActivity" android:taskAffinity="com.digits.sdk.android" android:windowSoftInputMode="stateVisible"/>
@@ -101,6 +113,7 @@
         <service android:enabled="true" android:exported="false" android:name="com.digits.sdk.android.ContactsUploadService"/>
         <activity android:configChanges="orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:name="com.twitter.sdk.android.core.identity.OAuthActivity"/>
         <activity android:configChanges="orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:icon="@drawable/tw__transparent" android:label="@string/kit_name" android:name="com.twitter.sdk.android.core.identity.ShareEmailActivity"/>
+
     </application>
 
 </manifest>

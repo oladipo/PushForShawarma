@@ -25,11 +25,13 @@
 	        android:textStyle="bold" />
     </RelativeLayout>
     
-    <LinearLayout
+    <GridLayout
         android:id="@+id/Layout_Most_Popular"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/orange"
+        android:rowCount="1"
+        android:columnCount="3"
         android:orientation="horizontal" >
    
         <TextView
@@ -43,24 +45,35 @@
             android:text="Most Popular"
             android:textColor="@color/white"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/Most_Popular_Header_Count"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:gravity="right"
             android:paddingBottom="@dimen/list_item_horizontal_margin"
             android:paddingLeft="@dimen/list_item_horizontal_margin"
             android:paddingRight="@dimen/list_item_horizontal_margin"
             android:paddingTop="@dimen/list_item_horizontal_margin"
-            android:text=" | 5 Dishes >"
+            android:text=" | 5 Dishes"
             android:textColor="@color/white"
-            android:textStyle="bold" />		     
-    </LinearLayout>
+            android:textStyle="bold" />
+            
+        <ImageView
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:gravity="right"
+	          android:src="@drawable/ic_action_white"
+	          android:layout_marginTop="@dimen/list_item_vertical_margin"
+	          android:paddingRight="@dimen/activity_horizontal_margin" />	
+	               
+    </GridLayout>
     
     <HorizontalScrollView android:id="@+id/Layout_Most_Popular_Pics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/white" android:scrollbars="none"
         android:orientation="horizontal" >
    		
    		<LinearLayout android:layout_width="wrap_content"
@@ -125,4 +138,9 @@
             android:textStyle="bold" />
 		     
     </LinearLayout>    
+
+	<FrameLayout android:id="@+id/fragment_menus"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" />
+	
 </LinearLayout>

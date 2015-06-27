@@ -2,7 +2,7 @@ package com.synkron.pushforshawarma.contentproviders;
 
 import java.util.HashMap;
 
-import com.synkron.pushforshawarma.dbopenhelpers.OutletsDBOpenHelper;
+import com.synkron.pushforshawarma.dbopenhelpers.PushForShawarmaDBOpenHelper;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -18,6 +18,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 public class OutletsContentProvider extends ContentProvider{
+	
+	private static final String TAG = "OutletsContentProvider";
 	
 	public static final Uri CONTENT_URI = Uri.parse("content://com.synkron.pushforshawarma.contentproviders.OutletsContentProvider/outlets");
 	private static final int ALLROWS = 1;
@@ -39,7 +41,7 @@ public class OutletsContentProvider extends ContentProvider{
 	
 	private static final UriMatcher uriMatcher;
 	SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-	OutletsDBOpenHelper dbHelper;
+	PushForShawarmaDBOpenHelper dbHelper;
 	
 	static{
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -59,6 +61,7 @@ public class OutletsContentProvider extends ContentProvider{
 	
 	//Projection for search suggestions....
 	private static final HashMap<String, String> SEARCH_SUGGEST_PROJECTION_MAP;
+
 	static{
 		SEARCH_SUGGEST_PROJECTION_MAP = new HashMap<String, String>();
 		SEARCH_SUGGEST_PROJECTION_MAP.put("_id", KEY_ID + " AS "+ "_id");
@@ -71,8 +74,8 @@ public class OutletsContentProvider extends ContentProvider{
 	@Override
 	public boolean onCreate() {
 		Context context = getContext();
-		dbHelper = new OutletsDBOpenHelper(context, OutletsDBOpenHelper.DATABASE_NAME, null, 
-				OutletsDBOpenHelper.DATABASE_VERSION);
+		dbHelper = new PushForShawarmaDBOpenHelper(context, PushForShawarmaDBOpenHelper.DATABASE_NAME, null, 
+				PushForShawarmaDBOpenHelper.DATABASE_VERSION);
 		return true;
 	}
 
@@ -82,8 +85,8 @@ public class OutletsContentProvider extends ContentProvider{
 		SQLiteDatabase database = dbHelper.getWritableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		
-		queryBuilder.setTables(OutletsDBOpenHelper.DATABASE_TABLE);
-	
+		queryBuilder.setTables(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE);
+		
 		//if this is a row query, limit the result set to the passed in row.
 		switch(uriMatcher.match(uri)){
 			case SINGLE_ROW:
@@ -107,9 +110,10 @@ public class OutletsContentProvider extends ContentProvider{
 		}
 		
 		//Apply the query to the underlying database.
+
 		Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, 
-				null, null, orderBy);
-		
+					null, null, orderBy);
+
 		//Register the contexts ContentResolver to be notified if the cursor result set changes..
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		
@@ -141,14 +145,14 @@ public class OutletsContentProvider extends ContentProvider{
 				OutletsContentProvider.KEY_OUTLET_LATITUDE
 		};
 		
-		Cursor cursor = database.query(false, OutletsDBOpenHelper.DATABASE_TABLE, 
+		Cursor cursor = database.query(false, PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, 
 				columns, KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
 				"' and "+ KEY_OUTLET_LONGITUDE + " = '"+ values.getAsString(KEY_OUTLET_LONGITUDE)+
 				"' and "+ KEY_OUTLET_LATITUDE + " = '"+ values.getAsString(KEY_OUTLET_LATITUDE)+"'",
 				null, null, null, null, null);
 		
 		if(!cursor.moveToFirst()){
-			long rowID = database.insert(OutletsDBOpenHelper.DATABASE_TABLE, null, values);
+			long rowID = database.insert(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, null, values);
 		
 			if(rowID > 0){
 				Uri _mUri = ContentUris.withAppendedId(CONTENT_URI, rowID);
@@ -159,7 +163,7 @@ public class OutletsContentProvider extends ContentProvider{
 			throw new SQLException("Failed to insert row into "+ uri);
 		}else{
 			//update existing rows..
-			database.update(OutletsDBOpenHelper.DATABASE_TABLE, values, 
+			database.update(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, values, 
 					KEY_OUTLET_CODE + " = '" + values.getAsString(KEY_OUTLET_CODE)+
 					"' and "+ KEY_OUTLET_NAME + " = '" + values.getAsString(KEY_OUTLET_NAME)+
 					"' and "+ KEY_OUTLET_LONGITUDE + " = '"+ values.getAsString(KEY_OUTLET_LONGITUDE)+
@@ -181,11 +185,11 @@ public class OutletsContentProvider extends ContentProvider{
 		int count;
 		switch(uriMatcher.match(uri)){
 		case ALLROWS:
-				count = database.delete(OutletsDBOpenHelper.DATABASE_TABLE, selection, selectionArgs);
+				count = database.delete(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, selection, selectionArgs);
 			break;
 		case SINGLE_ROW:
 			String segment = uri.getPathSegments().get(1);
-			count = database.delete(OutletsDBOpenHelper.DATABASE_TABLE, KEY_ID + "="
+			count = database.delete(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, KEY_ID + "="
 					+ segment
 					+ (!TextUtils.isEmpty(selection) ? " AND ("
 					+ selection + ')' : ""), selectionArgs);
@@ -209,11 +213,11 @@ public class OutletsContentProvider extends ContentProvider{
 		
 		switch(uriMatcher.match(uri)){
 		case ALLROWS:
-				count = database.update(OutletsDBOpenHelper.DATABASE_TABLE, values, selection, selectionArgs);
+				count = database.update(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, values, selection, selectionArgs);
 			break;
 		case SINGLE_ROW:
 			String segment = uri.getPathSegments().get(1);
-			count = database.update(OutletsDBOpenHelper.DATABASE_TABLE, values, 
+			count = database.update(PushForShawarmaDBOpenHelper.DATABASE_OUTLETS_TABLE, values, 
 					KEY_ID 
 					+ "=" + segment
 					+ (!TextUtils.isEmpty(selection) ? " AND ("
