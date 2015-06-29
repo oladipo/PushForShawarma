@@ -45,7 +45,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	private Location location;
 	public TextView txtLocation;
 	Marker cameraMarker;
-	Button btnBringShawarma, btnGoToMyLocation;
+	Button btnBringShawarma, btnGoToMyLocation, btnZoomIn, btnZoomOut;
 	GroundOverlayOptions userPosition;
 	UiSettings uiSettings;
 	private String TAG = "MapActivity";
@@ -56,6 +56,7 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 	private ArrayList<CustomMarker> mMarkersArray = new ArrayList<CustomMarker>();
 	
 	private static final float CAMERA_ZOOM_LEVEL = 15L;
+	private static final float CAMERA_ZOOM_INTERVAL = 2L;
 	//size of the area to get outlet information...
 	private static final float USER_DATA_INTERVAL = 400L;
 	
@@ -78,8 +79,29 @@ public class MapActivity extends ActionBarActivity implements UpdateMapAfterUser
 		
 		try{
 			initializeMap();
+			
 			btnBringShawarma = (Button)findViewById(R.id.btnPush);
 			btnGoToMyLocation = (Button)findViewById(R.id.goToMyLocation);
+			btnZoomIn = (Button)findViewById(R.id.btnZoomIN);
+			btnZoomOut = (Button)findViewById(R.id.btnZoomOUT);
+			
+			btnZoomIn.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					if(googleMap != null){
+						googleMap.moveCamera(CameraUpdateFactory.zoomBy(CAMERA_ZOOM_INTERVAL));
+					}
+				}
+			});
+			
+			btnZoomOut.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					if(googleMap != null){
+						googleMap.moveCamera(CameraUpdateFactory.zoomBy(-(CAMERA_ZOOM_INTERVAL)));
+					}
+				}
+			});
 			
 			btnGoToMyLocation.setOnClickListener(new OnClickListener(){
 

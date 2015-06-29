@@ -7,7 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="marker_logo_desc">logo</string>
-    <string name="pushBtnText">Bring Me Shawarma!</string>
+    <string name="pushBtnText">BRING ME SHAWARMA!</string>
     <string name="mapLaunchText">View Map</string>
     <string name="signInFacebook">Facebook</string>
     <string name="signInGoogle">Google+</string>

@@ -208,11 +208,13 @@
       	
       	<EditText
       	    android:layout_width="fill_parent"
-      	    android:layout_height="110dp"
+      	    android:layout_height="wrap_content"
       	    android:layout_marginBottom="@dimen/list_item_vertical_margin"
       	    android:layout_marginLeft="@dimen/activity_horizontal_margin"
       	    android:layout_marginRight="@dimen/activity_horizontal_margin"
+      	    android:gravity="top"
       	    android:background="@color/white"
+      	    android:lines="5"
       	    android:textSize="20sp"
       	    android:textStyle="bold"
       	    android:width="25dp" />

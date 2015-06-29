@@ -52,29 +52,29 @@ public final class R {
 		public static final int tw__permission_title_text_size = 0x7f060028;
 	}
 	public static final class drawable {
-		public static final int dgts__addressbook_header = 0x7f0200a6;
-		public static final int dgts__digits_btn = 0x7f0200a7;
-		public static final int dgts__digits_btn_default = 0x7f0200a8;
-		public static final int dgts__digits_btn_pressed = 0x7f0200a9;
-		public static final int dgts__ic_success = 0x7f0200aa;
-		public static final int dgts__login_header = 0x7f0200ab;
-		public static final int dgts__logo = 0x7f0200ac;
-		public static final int dgts__logo_name = 0x7f0200ad;
-		public static final int dgts__spinner_dark = 0x7f0200ae;
-		public static final int dgts__spinner_light = 0x7f0200af;
-		public static final int progress_dark = 0x7f0200c3;
-		public static final int progress_light = 0x7f0200c4;
-		public static final int tw__ic_logo_default = 0x7f0200cf;
-		public static final int tw__login_btn = 0x7f0200d6;
-		public static final int tw__login_btn_default = 0x7f0200d7;
-		public static final int tw__login_btn_default_light = 0x7f0200d8;
-		public static final int tw__login_btn_disabled = 0x7f0200d9;
-		public static final int tw__login_btn_light = 0x7f0200da;
-		public static final int tw__login_btn_pressed = 0x7f0200db;
-		public static final int tw__login_btn_pressed_light = 0x7f0200dc;
-		public static final int tw__login_btn_text_color_light = 0x7f0200dd;
-		public static final int tw__share_email_header = 0x7f0200de;
-		public static final int tw__transparent = 0x7f0200df;
+		public static final int dgts__addressbook_header = 0x7f0200a7;
+		public static final int dgts__digits_btn = 0x7f0200a8;
+		public static final int dgts__digits_btn_default = 0x7f0200a9;
+		public static final int dgts__digits_btn_pressed = 0x7f0200aa;
+		public static final int dgts__ic_success = 0x7f0200ab;
+		public static final int dgts__login_header = 0x7f0200ac;
+		public static final int dgts__logo = 0x7f0200ad;
+		public static final int dgts__logo_name = 0x7f0200ae;
+		public static final int dgts__spinner_dark = 0x7f0200af;
+		public static final int dgts__spinner_light = 0x7f0200b0;
+		public static final int progress_dark = 0x7f0200c7;
+		public static final int progress_light = 0x7f0200c8;
+		public static final int tw__ic_logo_default = 0x7f0200d4;
+		public static final int tw__login_btn = 0x7f0200db;
+		public static final int tw__login_btn_default = 0x7f0200dc;
+		public static final int tw__login_btn_default_light = 0x7f0200dd;
+		public static final int tw__login_btn_disabled = 0x7f0200de;
+		public static final int tw__login_btn_light = 0x7f0200df;
+		public static final int tw__login_btn_pressed = 0x7f0200e0;
+		public static final int tw__login_btn_pressed_light = 0x7f0200e1;
+		public static final int tw__login_btn_text_color_light = 0x7f0200e2;
+		public static final int tw__share_email_header = 0x7f0200e3;
+		public static final int tw__transparent = 0x7f0200e4;
 	}
 	public static final class id {
 		public static final int dgts__confirmationEditText = 0x7f0d0099;
@@ -99,12 +99,12 @@ public final class R {
 		public static final int dgts__termsTextCreateAccount = 0x7f0d009c;
 		public static final int dgts__try_another_phone = 0x7f0d00a5;
 		public static final int dgts__upload_contacts = 0x7f0d009f;
-		public static final int imageView = 0x7f0d00d0;
-		public static final int tw__allow_btn = 0x7f0d00d3;
-		public static final int tw__not_now_btn = 0x7f0d00d2;
-		public static final int tw__share_email_desc = 0x7f0d00d1;
-		public static final int tw__spinner = 0x7f0d00cf;
-		public static final int tw__web_view = 0x7f0d00ce;
+		public static final int imageView = 0x7f0d00d2;
+		public static final int tw__allow_btn = 0x7f0d00d5;
+		public static final int tw__not_now_btn = 0x7f0d00d4;
+		public static final int tw__share_email_desc = 0x7f0d00d3;
+		public static final int tw__spinner = 0x7f0d00d1;
+		public static final int tw__web_view = 0x7f0d00d0;
 	}
 	public static final class layout {
 		public static final int dgts__activity_confirmation = 0x7f03002c;
