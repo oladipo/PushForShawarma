@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/oladipo/PushForShawarma.svg?branch=master)](https://travis-ci.org/oladipo/PushForShawarma)
+
 # PushForShawarma
 
 To shawarma connoisseurs, finding the best shawarma in town can be a bit of a challenge. This app will let you find the best shawarma in our location with your smart phone. 
